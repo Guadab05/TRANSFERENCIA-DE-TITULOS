@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
-  <title>Cocos Capital — Transferencia de títulos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cocos Capital — Panel interno</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,10 +13,13 @@
       --primary-dark: #009456;
       --primary-light: #E6F7EE;
       --dark: #0F1F1A;
+      --sidebar-bg: #0F1F1A;
+      --sidebar-text: #D1D5DB;
+      --sidebar-active: #00B36B;
       --text: #1F2937;
       --text-muted: #6B7280;
       --text-soft: #9CA3AF;
-      --bg: #FAFAF7;
+      --bg: #F7F7F4;
       --card: #FFFFFF;
       --border: #E5E7EB;
       --border-strong: #D1D5DB;
@@ -28,146 +31,193 @@
       --success-light: #D1FAE5;
       --info: #3B82F6;
       --info-light: #DBEAFE;
-      --radius: 10px;
+      --radius: 8px;
       --radius-sm: 6px;
-      --radius-lg: 16px;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow: 0 4px 12px rgba(0,0,0,0.06);
-      --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html, body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       -webkit-font-smoothing: antialiased;
       line-height: 1.5;
+      font-size: 14px;
     }
 
-    body {
+    /* LAYOUTS */
+    .login-wrap {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-    }
-
-    /* Header */
-    .header {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
-    }
-    .header-inner {
-      max-width: 720px;
-      margin: 0 auto;
-      display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      padding: 20px;
     }
-    .logo {
+    .login-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+    .login-logo {
       display: flex;
       align-items: center;
       gap: 10px;
+      margin-bottom: 28px;
       font-weight: 700;
-      font-size: 18px;
+      font-size: 20px;
       color: var(--dark);
     }
     .logo-mark {
-      width: 28px; height: 28px;
+      width: 32px; height: 32px;
       background: var(--primary);
-      border-radius: 7px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: 700;
-      font-size: 14px;
-    }
-    .header-meta {
-      font-size: 13px;
-      color: var(--text-muted);
     }
 
-    /* Main container */
-    .container {
-      flex: 1;
-      max-width: 720px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 32px 20px 48px;
+    .app-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+    @media (max-width: 900px) {
+      .app-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .sidebar.open { display: flex; position: fixed; inset: 0; z-index: 100; width: 260px; }
     }
 
-    /* Progress bar */
-    .progress {
-      margin-bottom: 24px;
-    }
-    .progress-steps {
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      padding: 20px 0;
       display: flex;
-      gap: 4px;
-      margin-bottom: 8px;
+      flex-direction: column;
     }
-    .progress-step {
-      flex: 1;
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      transition: background 0.3s;
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 16px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
     }
-    .progress-step.active { background: var(--primary); }
-    .progress-step.done { background: var(--primary); }
-    .progress-label {
+    .sidebar-user {
+      padding: 12px 20px;
+      margin-bottom: 16px;
+    }
+    .sidebar-user-name {
       font-size: 13px;
-      color: var(--text-muted);
+      color: #fff;
       font-weight: 500;
     }
-
-    /* Card */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 32px;
-      box-shadow: var(--shadow-sm);
+    .sidebar-user-role {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
     }
-    @media (max-width: 600px) {
-      .card { padding: 24px 20px; border-radius: 12px; }
-      .container { padding: 20px 12px 40px; }
+    .nav-section-title {
+      padding: 8px 20px;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      letter-spacing: 0.05em;
+      margin-top: 8px;
     }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      color: var(--sidebar-text);
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.04); }
+    .nav-item.active {
+      background: rgba(0, 179, 107, 0.12);
+      color: #fff;
+      border-left-color: var(--sidebar-active);
+      font-weight: 500;
+    }
+    .nav-badge {
+      background: rgba(255,255,255,0.15);
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .nav-item.active .nav-badge { background: var(--primary); color: #fff; }
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .logout-btn {
+      background: none;
+      border: none;
+      color: var(--text-soft);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      padding: 6px 0;
+    }
+    .logout-btn:hover { color: #fff; }
 
-    .card-title {
+    /* MAIN */
+    .main {
+      padding: 28px 32px 48px;
+      overflow-x: hidden;
+    }
+    @media (max-width: 600px) { .main { padding: 20px 16px 40px; } }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .page-title {
       font-size: 22px;
       font-weight: 700;
       color: var(--dark);
-      margin-bottom: 8px;
       letter-spacing: -0.01em;
     }
-    .card-subtitle {
-      font-size: 15px;
+    .page-subtitle {
       color: var(--text-muted);
-      margin-bottom: 28px;
+      font-size: 14px;
+      margin-top: 4px;
     }
 
-    /* Form */
-    .field { margin-bottom: 18px; }
+    /* COMPONENTS */
+    .field { margin-bottom: 16px; }
     .field label {
       display: block;
       font-size: 13px;
       font-weight: 500;
-      color: var(--text);
       margin-bottom: 6px;
+      color: var(--text);
     }
-    .field .hint {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-    .field .required { color: var(--danger); }
-
     .input, .select, .textarea {
       width: 100%;
-      padding: 11px 14px;
-      font-size: 15px;
+      padding: 10px 12px;
+      font-size: 14px;
       font-family: inherit;
       color: var(--text);
       background: var(--card);
@@ -180,67 +230,15 @@
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(0, 179, 107, 0.15);
     }
-    .input.error, .select.error {
-      border-color: var(--danger);
-    }
-    .input.error:focus, .select.error:focus {
-      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
-    }
-    .textarea { min-height: 96px; resize: vertical; }
+    .textarea { min-height: 80px; resize: vertical; font-family: inherit; }
 
-    .field-error {
-      font-size: 12px;
-      color: var(--danger);
-      margin-top: 4px;
-    }
-
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    @media (max-width: 500px) {
-      .field-row { grid-template-columns: 1fr; }
-    }
-
-    /* Radio group */
-    .radio-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .radio-tile {
-      flex: 1;
-      min-width: 140px;
-      padding: 14px;
-      border: 1.5px solid var(--border-strong);
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 500;
-      background: var(--card);
-    }
-    .radio-tile:hover {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-    .radio-tile.selected {
-      border-color: var(--primary);
-      background: var(--primary-light);
-      color: var(--primary-dark);
-    }
-    .radio-tile input { display: none; }
-
-    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 12px 20px;
-      font-size: 15px;
+      gap: 6px;
+      padding: 9px 16px;
+      font-size: 13px;
       font-weight: 600;
       font-family: inherit;
       border-radius: var(--radius);
@@ -248,403 +246,179 @@
       cursor: pointer;
       transition: all 0.15s;
       text-decoration: none;
-    }
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-    .btn-primary:hover:not(:disabled) {
-      background: var(--primary-dark);
-    }
-    .btn-primary:disabled {
-      background: var(--text-soft);
-      cursor: not-allowed;
-    }
-    .btn-secondary {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border-strong);
-    }
-    .btn-secondary:hover:not(:disabled) {
-      background: var(--bg);
-      border-color: var(--text-muted);
-    }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-muted);
-    }
-    .btn-ghost:hover { color: var(--text); }
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-    }
-    .btn-block { width: 100%; }
-
-    .btn-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 28px;
-    }
-    .btn-row .btn { flex: 1; }
-    .btn-row .btn-ghost { flex: 0 0 auto; }
-
-    /* Alert */
-    .alert {
-      padding: 12px 16px;
-      border-radius: var(--radius);
-      font-size: 14px;
-      margin-bottom: 20px;
-      border: 1px solid;
-    }
-    .alert-info {
-      background: var(--info-light);
-      color: #1E40AF;
-      border-color: #BFDBFE;
-    }
-    .alert-warning {
-      background: var(--warning-light);
-      color: #92400E;
-      border-color: #FDE68A;
-    }
-    .alert-danger {
-      background: var(--danger-light);
-      color: #991B1B;
-      border-color: #FECACA;
-    }
-    .alert-success {
-      background: var(--success-light);
-      color: #065F46;
-      border-color: #A7F3D0;
-    }
-    .alert strong { font-weight: 600; }
-
-    /* Table for especies */
-    .especies-list { margin-bottom: 16px; }
-    .especie-row {
-      display: grid;
-      grid-template-columns: 1fr 1.5fr 1fr auto;
-      gap: 10px;
-      margin-bottom: 10px;
-      align-items: start;
-    }
-    .especie-row .btn-remove {
-      padding: 10px 12px;
-      background: var(--danger-light);
-      color: var(--danger);
-      border: 1px solid #FECACA;
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-    }
-    .especie-row .btn-remove:hover { background: #FEE2E2; }
-    @media (max-width: 600px) {
-      .especie-row {
-        grid-template-columns: 1fr 1fr auto;
-        grid-template-areas:
-          "codigo codigo remove"
-          "nombre nombre nombre"
-          "cantidad cantidad cantidad";
-      }
-      .especie-row input:nth-child(1) { grid-area: codigo; }
-      .especie-row input:nth-child(2) { grid-area: nombre; }
-      .especie-row input:nth-child(3) { grid-area: cantidad; }
-      .especie-row .btn-remove { grid-area: remove; }
-    }
-
-    /* Signature */
-    .sig-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .sig-tab {
-      flex: 1;
-      padding: 12px;
-      border: 1.5px solid var(--border-strong);
-      border-radius: var(--radius);
-      background: var(--card);
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.15s;
-    }
-    .sig-tab.active {
-      border-color: var(--primary);
-      background: var(--primary-light);
-      color: var(--primary-dark);
-    }
-    .sig-canvas-wrap {
-      border: 2px dashed var(--border-strong);
-      border-radius: var(--radius);
-      background: white;
-      position: relative;
-      overflow: hidden;
-    }
-    .sig-canvas {
-      display: block;
-      width: 100%;
-      height: 220px;
-      cursor: crosshair;
-      touch-action: none;
-    }
-    .sig-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    .sig-upload-zone {
-      border: 2px dashed var(--border-strong);
-      border-radius: var(--radius);
-      padding: 32px;
-      text-align: center;
-      background: var(--bg);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .sig-upload-zone:hover {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-    .sig-upload-zone input { display: none; }
-    .sig-upload-label {
-      color: var(--text);
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-    .sig-upload-hint {
-      color: var(--text-muted);
-      font-size: 13px;
-    }
-
-    /* File list */
-    .file-list {
-      margin-top: 12px;
-    }
-    .file-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-    .file-item-name {
-      flex: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .file-item-size {
-      color: var(--text-muted);
-      font-size: 12px;
-    }
-    .file-item-remove {
-      background: none;
-      border: none;
-      color: var(--danger);
-      cursor: pointer;
-      font-size: 16px;
-      padding: 4px 8px;
-    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+    .btn-primary:disabled { background: var(--text-soft); cursor: not-allowed; }
+    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border-strong); }
+    .btn-secondary:hover:not(:disabled) { background: var(--bg); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover:not(:disabled) { background: #B91C1C; }
+    .btn-warning { background: var(--warning); color: white; }
+    .btn-warning:hover:not(:disabled) { background: #D97706; }
+    .btn-ghost { background: transparent; color: var(--text-muted); }
+    .btn-ghost:hover { color: var(--text); background: var(--border); }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+    .btn-block { width: 100%; }
 
-    /* Checkbox */
-    .checkbox-field {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
+    .alert {
+      padding: 10px 14px;
       border-radius: var(--radius);
-      cursor: pointer;
-    }
-    .checkbox-field input {
-      margin-top: 2px;
-      accent-color: var(--primary);
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-    }
-    .checkbox-field label {
       font-size: 13px;
-      line-height: 1.5;
-      color: var(--text);
-      cursor: pointer;
-      flex: 1;
+      margin-bottom: 16px;
+      border: 1px solid;
+    }
+    .alert-info { background: var(--info-light); color: #1E40AF; border-color: #BFDBFE; }
+    .alert-warning { background: var(--warning-light); color: #92400E; border-color: #FDE68A; }
+    .alert-danger { background: var(--danger-light); color: #991B1B; border-color: #FECACA; }
+    .alert-success { background: var(--success-light); color: #065F46; border-color: #A7F3D0; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card + .card { margin-top: 16px; }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
     }
 
-    /* Review / summary */
-    .summary-section {
+    /* KPI grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
       margin-bottom: 24px;
     }
-    .summary-section h3 {
-      font-size: 14px;
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .kpi-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    /* Table */
+    .tickets-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .tickets-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.03em;
-      margin-bottom: 12px;
-    }
-    .summary-row {
-      display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 16px;
-      padding: 10px 0;
+      letter-spacing: 0.04em;
+      background: var(--bg);
       border-bottom: 1px solid var(--border);
-      font-size: 14px;
     }
-    .summary-row:last-child { border-bottom: none; }
-    .summary-row .label { color: var(--text-muted); }
-    .summary-row .value { color: var(--text); font-weight: 500; }
-    @media (max-width: 500px) {
-      .summary-row { grid-template-columns: 1fr; gap: 4px; }
+    .tickets-table td {
+      padding: 14px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tickets-table tr:last-child td { border-bottom: none; }
+    .tickets-table tbody tr {
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .tickets-table tbody tr:hover { background: var(--bg); }
+    .tickets-table .ticket-num {
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .tickets-table .client-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .tickets-table .client-name { font-weight: 500; }
+    .tickets-table .client-email {
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
-    /* Status timeline */
-    .status-header {
-      text-align: center;
-      padding: 32px 20px;
-      background: linear-gradient(180deg, var(--primary-light) 0%, rgba(230,247,238,0) 100%);
-      border-radius: var(--radius-lg);
-      margin-bottom: 24px;
-    }
+    /* Status badge */
     .status-badge {
       display: inline-block;
-      padding: 6px 14px;
+      padding: 3px 10px;
       border-radius: 100px;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
-      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
     .status-badge.borrador { background: #F3F4F6; color: #4B5563; }
     .status-badge.en_revision { background: var(--info-light); color: #1E40AF; }
     .status-badge.info_pedida { background: var(--warning-light); color: #92400E; }
     .status-badge.aprobada { background: var(--success-light); color: #065F46; }
-    .status-badge.en_liquidacion { background: var(--success-light); color: #065F46; }
-    .status-badge.completada { background: var(--success-light); color: #065F46; }
+    .status-badge.en_liquidacion { background: var(--primary-light); color: var(--primary-dark); }
+    .status-badge.completada { background: var(--success-light); color: #065F46; font-weight: 700; }
     .status-badge.rechazada { background: var(--danger-light); color: #991B1B; }
 
-    .status-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 6px;
-    }
-    .status-meta {
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    .timeline {
-      position: relative;
-      padding-left: 28px;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 7px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      background: var(--border);
-    }
-    .timeline-event {
-      position: relative;
-      padding-bottom: 20px;
-    }
-    .timeline-event::before {
-      content: '';
-      position: absolute;
-      left: -27px;
-      top: 4px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--card);
-      border: 3px solid var(--primary);
-    }
-    .timeline-event.muted::before {
-      border-color: var(--border-strong);
-    }
-    .timeline-time {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-    .timeline-desc {
-      font-size: 14px;
-      color: var(--text);
-    }
-
-    /* Comments thread */
-    .comment-thread { margin-top: 24px; }
-    .comment {
-      padding: 14px 16px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 10px;
-    }
-    .comment-header {
+    /* Filters bar */
+    .filters {
       display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
     }
-    .comment-author { font-weight: 600; color: var(--text); }
-    .comment-body {
-      font-size: 14px;
-      line-height: 1.55;
-      white-space: pre-wrap;
-    }
+    .filters .input, .filters .select { flex: 1; min-width: 180px; max-width: 280px; }
 
-    /* Success state */
-    .success-hero {
+    /* Empty state */
+    .empty-state {
       text-align: center;
-      padding: 24px 0;
-    }
-    .success-icon {
-      width: 72px; height: 72px;
-      margin: 0 auto 20px;
-      background: var(--primary-light);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .success-icon svg { width: 36px; height: 36px; stroke: var(--primary); }
-    .success-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 8px;
-    }
-    .success-subtitle {
-      font-size: 15px;
+      padding: 60px 20px;
       color: var(--text-muted);
-      margin-bottom: 24px;
+    }
+    .empty-state h3 {
+      color: var(--text);
+      font-size: 16px;
+      margin-bottom: 6px;
+      font-weight: 600;
     }
 
     /* Loader */
     .loader {
       display: inline-block;
-      width: 16px; height: 16px;
+      width: 14px; height: 14px;
       border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white;
+      border-top-color: #fff;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
+    .loader-dark {
+      border: 2px solid var(--border);
+      border-top-color: var(--primary);
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
     .page-loader {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 80px 20px;
     }
     .page-loader .loader {
       width: 32px; height: 32px;
@@ -652,1366 +426,1261 @@
       border-top-color: var(--primary);
     }
 
-    /* Footer */
-    .footer {
-      padding: 20px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-soft);
-      border-top: 1px solid var(--border);
-      background: var(--card);
+    /* Detail view */
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 20px;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    .footer a { color: var(--text-muted); text-decoration: none; }
+    .detail-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .detail-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 16px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .label { color: var(--text-muted); }
+    .info-row .value { color: var(--text); font-weight: 500; }
+
+    /* Especies table */
+    .especies-mini {
+      width: 100%;
+      font-size: 13px;
+    }
+    .especies-mini th, .especies-mini td {
+      text-align: left;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .especies-mini th {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Docs list */
+    .doc-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .doc-item a {
+      margin-left: auto;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .doc-item a:hover { text-decoration: underline; }
+
+    /* Comment thread */
+    .comment {
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .comment.internal {
+      background: #FFF7E6;
+      border-color: #FDE68A;
+    }
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 500;
+    }
+    .comment-author { color: var(--text); }
+    .comment-body { line-height: 1.55; white-space: pre-wrap; }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px; top: 6px; bottom: 6px;
+      width: 2px;
+      background: var(--border);
+    }
+    .timeline-event {
+      position: relative;
+      padding-bottom: 14px;
+      font-size: 13px;
+    }
+    .timeline-event::before {
+      content: '';
+      position: absolute;
+      left: -23px;
+      top: 3px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--primary);
+    }
+    .timeline-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Action buttons */
+    .action-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    /* Link copy */
+    .link-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'SF Mono', Menlo, monospace;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .link-box code {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+    .modal {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 460px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--dark);
+    }
+
+    a { color: var(--primary); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-inner">
-      <div class="logo">
-        <div class="logo-mark">C</div>
-        <span>Cocos Capital</span>
-      </div>
-      <div class="header-meta">Transferencia de títulos</div>
-    </div>
-  </header>
-
-  <main class="container" id="app">
-    <div class="page-loader"><div class="loader"></div></div>
-  </main>
-
-  <footer class="footer">
-    Cocos Capital S.A. &nbsp;·&nbsp; Agente de Liquidación y Compensación Propio N° 688
-  </footer>
+  <div id="app"><div class="page-loader"><div class="loader"></div></div></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
   <script>
     // ========================================================================
-    // CONFIG — reemplazá con los valores de tu proyecto Supabase
+    // CONFIG — debe coincidir con el de index.html
     // ========================================================================
     const SUPABASE_URL = 'https://mcrtayhyqanxzabskpgf.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jcnRheWh5cWFueHphYnNrcGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NzYxMzgsImV4cCI6MjA5MjI1MjEzOH0.aL4rbPsaxmKXEAlgzPGE4b0h5mK1SaccqOa-PSeDWXU';
+    const CLIENT_PORTAL_URL = window.location.origin + '/index.html'; // ajustar si usás dominios separados
 
-    // ========================================================================
-    // CONSTANTES DE DATOS
-    // ========================================================================
-    const ALYCS_LIST = [
-      { nombre: 'Allaria S.A.', depositante: '100' },
-      { nombre: 'Balanz Capital', depositante: '212' },
-      { nombre: 'Bull Market Brokers', depositante: '237' },
-      { nombre: 'IEB — Invertir en Bolsa', depositante: '74' },
-      { nombre: 'Invertir Online (IOL)', depositante: '259' },
-      { nombre: 'Matba Rofex', depositante: '109' },
-      { nombre: 'Neix Inversiones', depositante: '281' },
-      { nombre: 'Portfolio Personal Inversiones', depositante: '157' },
-      { nombre: 'Puente Hnos.', depositante: '61' },
-      { nombre: 'SBS Trading', depositante: '166' },
-      { nombre: 'Otra (especificar)', depositante: '' }
-    ];
-
-    const MOTIVOS = [
-      { value: 'donacion', label: 'Donación' },
-      { value: 'sucesion', label: 'Sucesión / herencia' },
-      { value: 'sociedad_conyugal', label: 'Disolución de sociedad conyugal' },
-      { value: 'pago_entre_partes', label: 'Pago entre partes' },
-      { value: 'aporte_sociedad', label: 'Aporte a sociedad relacionada' },
-      { value: 'cambio_alyc', label: 'Cambio de ALYC (misma titularidad ampliada)' },
-      { value: 'otro', label: 'Otro' }
-    ];
-
-    const RELACIONES = [
-      { value: 'conyuge', label: 'Cónyuge' },
-      { value: 'hijo', label: 'Hijo/a' },
-      { value: 'padre', label: 'Padre / madre' },
-      { value: 'hermano', label: 'Hermano/a' },
-      { value: 'otro_familiar', label: 'Otro familiar' },
-      { value: 'socio', label: 'Socio / sociedad relacionada' },
-      { value: 'sin_relacion', label: 'Sin relación familiar' }
-    ];
-
-    // Documentación sugerida según motivo
-    const DOCS_REQUERIDOS = {
-      donacion: ['DNI del destinatario', 'Contrato de donación o declaración'],
-      sucesion: ['Auto declaratorio de herederos', 'DNI del heredero'],
-      sociedad_conyugal: ['Acta de divorcio u homologación', 'DNI del ex cónyuge'],
-      pago_entre_partes: ['Contrato o factura que origina el pago', 'DNI del beneficiario'],
-      aporte_sociedad: ['Acta de la sociedad', 'Estatuto societario'],
-      cambio_alyc: ['DNI del titular'],
-      otro: ['Documentación que respalde la operación']
-    };
-
-    // ========================================================================
-    // SUPABASE CLIENT
-    // ========================================================================
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // ========================================================================
     // STATE
     // ========================================================================
     let state = {
-      view: 'loading', // loading | landing | otp | wizard | success | status | not-found
+      view: 'loading', // loading | login | app
+      user: null,
+      profile: null,
+      nav: null, // tab activa
+      tickets: [],
+      stats: null,
+      selectedTicket: null,
+      selectedEvents: [],
+      selectedComments: [],
+      selectedDocs: [],
+      filters: { search: '', status: '' },
       loading: false,
       error: '',
-      comercialSlug: null,
-      email: '',
-      otpSent: false,
-      wizardStep: 1,
-      ticket: newTicketState(),
-      savedTicket: null, // the submitted ticket
-      statusTicketId: null,
-      statusTicket: null,
-      statusEvents: [],
-      statusComments: [],
-      newComment: ''
+      modal: null, // nombre del modal activo
+      modalPayload: null
     };
 
-    function newTicketState() {
-      return {
-        id: null,
-        nombre: '',
-        cuit: '',
-        cuentaOrigen: '',
-        cuentaOrigenConfirm: '',
-        telefono: '',
-        alycDestinoIdx: -1,
-        alycNombreOtro: '',
-        alycDepositante: '',
-        cuentaDestino: '',
-        titularDestino: '',
-        cuitTitularDestino: '',
-        isSameName: null, // null = not chosen yet
-        motivo: '',
-        motivoDetalle: '',
-        relacion: '',
-        especies: [{ codigo: '', nombre: '', cantidad: '' }],
-        firmaTipo: null,
-        firmaDataUrl: null,
-        firmaFile: null,
-        docs: [],
-        declaracion: false
-      };
-    }
-
-    let sigPad = null;
-
-    // ========================================================================
-    // ROUTER
-    // ========================================================================
-    function parseUrl() {
-      const params = new URLSearchParams(window.location.search);
-      return {
-        comercial: params.get('c'),
-        ticket: params.get('ticket')
-      };
-    }
-
-    async function boot() {
-      const { comercial, ticket } = parseUrl();
-      state.comercialSlug = comercial || null;
-
-      if (ticket) {
-        state.statusTicketId = ticket;
-        await loadStatus();
-        return;
-      }
-
-      // No hay ticket en la URL: chequear si tiene sesión activa
-      const { data: { session } } = await sb.auth.getSession();
-      if (session) {
-        // Ya autenticado, saltar a wizard
-        state.email = session.user.email;
-        state.view = 'wizard';
-        state.wizardStep = 1;
-      } else {
-        state.view = 'landing';
-      }
-      render();
-    }
-
-    // ========================================================================
-    // RENDER DISPATCHER
-    // ========================================================================
     function setState(patch) {
       state = { ...state, ...patch };
       render();
     }
 
-    function mutTicket(patch) {
-      state.ticket = { ...state.ticket, ...patch };
-      // mutación sin re-render (para inputs que controlan su propio estado)
-    }
-
-    function render() {
-      const root = document.getElementById('app');
-      let html = '';
-      switch (state.view) {
-        case 'loading': html = `<div class="page-loader"><div class="loader"></div></div>`; break;
-        case 'landing': html = viewLanding(); break;
-        case 'otp': html = viewOtp(); break;
-        case 'wizard': html = viewWizard(); break;
-        case 'success': html = viewSuccess(); break;
-        case 'status': html = viewStatus(); break;
-        case 'not-found': html = viewNotFound(); break;
-      }
-      root.innerHTML = html;
-
-      // Post-render hooks
-      if (state.view === 'wizard' && state.wizardStep === 5 && state.ticket.firmaTipo === 'pantalla') {
-        setTimeout(initSignaturePad, 0);
-      }
-    }
-
     // ========================================================================
-    // VIEW: LANDING (email input)
+    // BOOT
     // ========================================================================
-    function viewLanding() {
-      return `
-        <div class="card">
-          <h1 class="card-title">Transferencia de títulos</h1>
-          <p class="card-subtitle">Para iniciar tu solicitud, ingresá el mail que tenés registrado en tu cuenta de Cocos. Te vamos a enviar un código de 6 dígitos para verificar tu identidad.</p>
-
-          <div class="alert alert-info">
-            <strong>Importante:</strong> usá el mail asociado a tu cuenta de Cocos. Si usás otro, no vamos a poder procesar tu solicitud.
-          </div>
-
-          ${state.error ? `<div class="alert alert-danger">${escapeHtml(state.error)}</div>` : ''}
-
-          <div class="field">
-            <label for="email">Mail de tu cuenta Cocos <span class="required">*</span></label>
-            <input type="email" id="email" class="input" placeholder="tumail@ejemplo.com" value="${escapeHtml(state.email)}" autocomplete="email" inputmode="email">
-          </div>
-
-          <button class="btn btn-primary btn-block" onclick="sendOtp()" ${state.loading ? 'disabled' : ''}>
-            ${state.loading ? '<span class="loader"></span>' : ''} Enviar código
-          </button>
-
-          ${state.comercialSlug ? `
-            <p class="hint" style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--text-soft);">
-              Te atiende: <strong>${escapeHtml(state.comercialSlug)}</strong>
-            </p>
-          ` : ''}
-        </div>
-      `;
-    }
-
-    async function sendOtp() {
-      const emailInput = document.getElementById('email');
-      const email = emailInput.value.trim().toLowerCase();
-
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        setState({ error: 'Ingresá un mail válido.' });
-        return;
-      }
-
-      setState({ loading: true, error: '', email });
-
-      try {
-        const { error } = await sb.auth.signInWithOtp({
-          email,
-          options: { shouldCreateUser: true }
-        });
-
-        if (error) throw error;
-
-        setState({ loading: false, view: 'otp', otpSent: true });
-      } catch (err) {
-        setState({ loading: false, error: err.message || 'No pudimos enviar el código. Probá de nuevo.' });
-      }
-    }
-
-    // ========================================================================
-    // VIEW: OTP VERIFY
-    // ========================================================================
-    function viewOtp() {
-      return `
-        <div class="card">
-          <h1 class="card-title">Ingresá el código</h1>
-          <p class="card-subtitle">Te enviamos un código de 6 dígitos a <strong>${escapeHtml(state.email)}</strong>. Revisá tu casilla (incluyendo spam).</p>
-
-          ${state.error ? `<div class="alert alert-danger">${escapeHtml(state.error)}</div>` : ''}
-
-          <div class="field">
-            <label for="otp">Código de verificación <span class="required">*</span></label>
-            <input type="text" id="otp" class="input" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code" style="letter-spacing: 0.3em; text-align: center; font-size: 20px; font-weight: 600;">
-          </div>
-
-          <button class="btn btn-primary btn-block" onclick="verifyOtp()" ${state.loading ? 'disabled' : ''}>
-            ${state.loading ? '<span class="loader"></span>' : ''} Verificar y continuar
-          </button>
-
-          <div style="text-align: center; margin-top: 20px;">
-            <button class="btn btn-ghost" onclick="backToLanding()">Cambiar de mail</button>
-          </div>
-        </div>
-      `;
-    }
-
-    async function verifyOtp() {
-      const code = document.getElementById('otp').value.trim();
-      if (!/^\d{6}$/.test(code)) {
-        setState({ error: 'Ingresá los 6 dígitos del código.' });
-        return;
-      }
-
-      setState({ loading: true, error: '' });
-
-      try {
-        const { error } = await sb.auth.verifyOtp({
-          email: state.email,
-          token: code,
-          type: 'email'
-        });
-
-        if (error) throw error;
-
-        setState({ loading: false, view: 'wizard', wizardStep: 1 });
-      } catch (err) {
-        setState({ loading: false, error: 'El código es incorrecto o expiró. Pedí uno nuevo.' });
-      }
-    }
-
-    function backToLanding() {
-      sb.auth.signOut();
-      setState({ view: 'landing', error: '', otpSent: false, email: '' });
-    }
-
-    // ========================================================================
-    // VIEW: WIZARD (5 pasos + review)
-    // ========================================================================
-    function viewWizard() {
-      const total = state.ticket.isSameName === false ? 6 : 5; // paso extra si es a terceros
-      return `
-        <div class="progress">
-          <div class="progress-steps">
-            ${Array.from({ length: total }, (_, i) => {
-              const step = i + 1;
-              const cls = step < state.wizardStep ? 'done' : (step === state.wizardStep ? 'active' : '');
-              return `<div class="progress-step ${cls}"></div>`;
-            }).join('')}
-          </div>
-          <div class="progress-label">Paso ${state.wizardStep} de ${total}</div>
-        </div>
-
-        <div class="card">
-          ${state.error ? `<div class="alert alert-danger">${escapeHtml(state.error)}</div>` : ''}
-          ${wizardStepView()}
-        </div>
-      `;
-    }
-
-    function wizardStepView() {
-      switch (state.wizardStep) {
-        case 1: return stepDatosPersonales();
-        case 2: return stepDestino();
-        case 3: return stepEspecies();
-        case 4: return state.ticket.isSameName === false ? stepMotivoDocs() : stepFirma();
-        case 5: return state.ticket.isSameName === false ? stepFirma() : stepReview();
-        case 6: return stepReview();
-        default: return '';
-      }
-    }
-
-    // --- PASO 1: Datos personales ---
-    function stepDatosPersonales() {
-      const t = state.ticket;
-      return `
-        <h1 class="card-title">Tus datos</h1>
-        <p class="card-subtitle">Son los datos del titular de la cuenta comitente de origen en Cocos.</p>
-
-        <div class="field">
-          <label for="nombre">Nombre y apellido completos <span class="required">*</span></label>
-          <input type="text" id="nombre" class="input" value="${escapeHtml(t.nombre)}" oninput="mutTicket({ nombre: this.value })">
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="cuit">CUIT <span class="required">*</span></label>
-            <input type="text" id="cuit" class="input" value="${escapeHtml(t.cuit)}" oninput="mutTicket({ cuit: this.value })" placeholder="20-12345678-9" inputmode="numeric">
-            <div class="hint">Formato: 20-12345678-9</div>
-          </div>
-          <div class="field">
-            <label for="telefono">Teléfono de contacto</label>
-            <input type="tel" id="telefono" class="input" value="${escapeHtml(t.telefono)}" oninput="mutTicket({ telefono: this.value })" placeholder="+54 11 1234-5678" inputmode="tel">
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="cuentaOrigen">Cuenta comitente en Cocos <span class="required">*</span></label>
-          <input type="text" id="cuentaOrigen" class="input" value="${escapeHtml(t.cuentaOrigen)}" oninput="mutTicket({ cuentaOrigen: this.value })" placeholder="Tu número de cuenta comitente">
-          <div class="hint">Depositante: <strong>265</strong> — Cocos Capital S.A.</div>
-        </div>
-
-        <div class="field">
-          <label for="cuentaOrigenConfirm">Confirmá tu cuenta comitente <span class="required">*</span></label>
-          <input type="text" id="cuentaOrigenConfirm" class="input" value="${escapeHtml(t.cuentaOrigenConfirm)}" oninput="mutTicket({ cuentaOrigenConfirm: this.value })" placeholder="Repetí el número de cuenta" onpaste="event.preventDefault()">
-          <div class="hint">Por seguridad, escribí el número nuevamente (no se puede pegar).</div>
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="backToLanding()">Cancelar</button>
-          <button class="btn btn-primary" onclick="nextStep()">Continuar</button>
-        </div>
-      `;
-    }
-
-    // --- PASO 2: Destino ---
-    function stepDestino() {
-      const t = state.ticket;
-      const isOtra = t.alycDestinoIdx === ALYCS_LIST.length - 1;
-      return `
-        <h1 class="card-title">Destino de la transferencia</h1>
-        <p class="card-subtitle">Datos de la ALYC y cuenta de destino.</p>
-
-        <div class="field">
-          <label>¿La cuenta destino está a tu nombre? <span class="required">*</span></label>
-          <div class="radio-group">
-            <div class="radio-tile ${t.isSameName === true ? 'selected' : ''}" onclick="setSameName(true)">
-              Sí, es mía
-            </div>
-            <div class="radio-tile ${t.isSameName === false ? 'selected' : ''}" onclick="setSameName(false)">
-              No, es de un tercero
-            </div>
-          </div>
-          ${t.isSameName === false ? `
-            <div class="alert alert-warning" style="margin-top: 12px;">
-              Las transferencias a terceros requieren documentación respaldatoria adicional. Tené a mano los documentos antes de continuar.
-            </div>
-          ` : ''}
-        </div>
-
-        <div class="field">
-          <label for="alycIdx">ALYC destinataria <span class="required">*</span></label>
-          <select id="alycIdx" class="select" onchange="setAlyc(this.value)">
-            <option value="-1">Elegí una ALYC...</option>
-            ${ALYCS_LIST.map((a, i) => `<option value="${i}" ${t.alycDestinoIdx === i ? 'selected' : ''}>${escapeHtml(a.nombre)}</option>`).join('')}
-          </select>
-        </div>
-
-        ${isOtra ? `
-          <div class="field">
-            <label for="alycNombreOtro">Nombre de la ALYC <span class="required">*</span></label>
-            <input type="text" id="alycNombreOtro" class="input" value="${escapeHtml(t.alycNombreOtro)}" oninput="mutTicket({ alycNombreOtro: this.value })">
-          </div>
-        ` : ''}
-
-        <div class="field">
-          <label for="alycDepositante">Número de depositante destino <span class="required">*</span></label>
-          <input type="text" id="alycDepositante" class="input" value="${escapeHtml(t.alycDepositante)}" oninput="mutTicket({ alycDepositante: this.value })" inputmode="numeric" placeholder="Ej: 212">
-          <div class="hint">Lo podés consultar en tu extracto de la ALYC destinataria.</div>
-        </div>
-
-        <div class="field">
-          <label for="cuentaDestino">Cuenta comitente destino <span class="required">*</span></label>
-          <input type="text" id="cuentaDestino" class="input" value="${escapeHtml(t.cuentaDestino)}" oninput="mutTicket({ cuentaDestino: this.value })" placeholder="Número de cuenta en la ALYC destino">
-        </div>
-
-        ${t.isSameName === false ? `
-          <div class="field">
-            <label for="titularDestino">Nombre del titular de la cuenta destino <span class="required">*</span></label>
-            <input type="text" id="titularDestino" class="input" value="${escapeHtml(t.titularDestino)}" oninput="mutTicket({ titularDestino: this.value })">
-          </div>
-          <div class="field">
-            <label for="cuitTitularDestino">CUIT del titular destino <span class="required">*</span></label>
-            <input type="text" id="cuitTitularDestino" class="input" value="${escapeHtml(t.cuitTitularDestino)}" oninput="mutTicket({ cuitTitularDestino: this.value })" placeholder="20-12345678-9" inputmode="numeric">
-          </div>
-        ` : ''}
-
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="prevStep()">Atrás</button>
-          <button class="btn btn-primary" onclick="nextStep()">Continuar</button>
-        </div>
-      `;
-    }
-
-    function setSameName(v) {
-      state.ticket.isSameName = v;
-      render();
-    }
-
-    function setAlyc(idxStr) {
-      const idx = parseInt(idxStr);
-      state.ticket.alycDestinoIdx = idx;
-      if (idx >= 0 && idx < ALYCS_LIST.length - 1) {
-        const a = ALYCS_LIST[idx];
-        state.ticket.alycDepositante = a.depositante;
-        state.ticket.alycNombreOtro = '';
-      }
-      render();
-    }
-
-    // --- PASO 3: Especies ---
-    function stepEspecies() {
-      const t = state.ticket;
-      return `
-        <h1 class="card-title">Especies a transferir</h1>
-        <p class="card-subtitle">Cargá cada especie que querés transferir. Podés agregar más de una.</p>
-
-        <div class="especies-list">
-          ${t.especies.map((e, i) => `
-            <div class="especie-row">
-              <input type="text" class="input" placeholder="Código (AL30)" value="${escapeHtml(e.codigo)}" oninput="updateEspecie(${i}, 'codigo', this.value)">
-              <input type="text" class="input" placeholder="Nombre de la especie" value="${escapeHtml(e.nombre)}" oninput="updateEspecie(${i}, 'nombre', this.value)">
-              <input type="number" class="input" placeholder="Cantidad" value="${escapeHtml(e.cantidad)}" oninput="updateEspecie(${i}, 'cantidad', this.value)" min="0" step="0.0001">
-              ${t.especies.length > 1 ? `<button class="btn-remove" onclick="removeEspecie(${i})" aria-label="Eliminar">×</button>` : '<span></span>'}
-            </div>
-          `).join('')}
-        </div>
-
-        <button class="btn btn-secondary" onclick="addEspecie()">+ Agregar otra especie</button>
-
-        <div class="alert alert-info" style="margin-top: 24px;">
-          <strong>Recordá:</strong> la cantidad no puede superar tu tenencia disponible en Cocos. Si cargás más de lo que tenés, la solicitud será rechazada.
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="prevStep()">Atrás</button>
-          <button class="btn btn-primary" onclick="nextStep()">Continuar</button>
-        </div>
-      `;
-    }
-
-    function updateEspecie(i, key, value) {
-      state.ticket.especies[i][key] = value;
-    }
-
-    function addEspecie() {
-      state.ticket.especies.push({ codigo: '', nombre: '', cantidad: '' });
-      render();
-    }
-
-    function removeEspecie(i) {
-      state.ticket.especies.splice(i, 1);
-      render();
-    }
-
-    // --- PASO 4 (solo terceros): Motivo y documentación ---
-    function stepMotivoDocs() {
-      const t = state.ticket;
-      const docsRequeridos = t.motivo ? (DOCS_REQUERIDOS[t.motivo] || []) : [];
-      return `
-        <h1 class="card-title">Motivo y documentación</h1>
-        <p class="card-subtitle">Como la transferencia es a un tercero, necesitamos información adicional y documentación respaldatoria.</p>
-
-        <div class="field">
-          <label for="motivo">Motivo de la transferencia <span class="required">*</span></label>
-          <select id="motivo" class="select" onchange="mutTicket({ motivo: this.value }); render();">
-            <option value="">Elegí un motivo...</option>
-            ${MOTIVOS.map(m => `<option value="${m.value}" ${t.motivo === m.value ? 'selected' : ''}>${escapeHtml(m.label)}</option>`).join('')}
-          </select>
-        </div>
-
-        ${t.motivo === 'otro' ? `
-          <div class="field">
-            <label for="motivoDetalle">Detallá el motivo <span class="required">*</span></label>
-            <textarea id="motivoDetalle" class="textarea" oninput="mutTicket({ motivoDetalle: this.value })">${escapeHtml(t.motivoDetalle)}</textarea>
-          </div>
-        ` : ''}
-
-        <div class="field">
-          <label for="relacion">Relación con el destinatario <span class="required">*</span></label>
-          <select id="relacion" class="select" onchange="mutTicket({ relacion: this.value })">
-            <option value="">Elegí una relación...</option>
-            ${RELACIONES.map(r => `<option value="${r.value}" ${t.relacion === r.value ? 'selected' : ''}>${escapeHtml(r.label)}</option>`).join('')}
-          </select>
-        </div>
-
-        ${docsRequeridos.length > 0 ? `
-          <div class="alert alert-info">
-            <strong>Documentación sugerida para este motivo:</strong>
-            <ul style="margin: 8px 0 0 20px;">
-              ${docsRequeridos.map(d => `<li>${escapeHtml(d)}</li>`).join('')}
-            </ul>
-          </div>
-        ` : ''}
-
-        <div class="field">
-          <label>Adjuntá la documentación respaldatoria <span class="required">*</span></label>
-          <div class="sig-upload-zone" onclick="document.getElementById('docsInput').click()">
-            <input type="file" id="docsInput" multiple accept="image/*,.pdf" onchange="addDocs(this.files)">
-            <div class="sig-upload-label">Hacé clic para subir archivos</div>
-            <div class="sig-upload-hint">PDF o imágenes (JPG, PNG). Máximo 10 MB por archivo.</div>
-          </div>
-          <div class="file-list">
-            ${t.docs.map((d, i) => `
-              <div class="file-item">
-                <span class="file-item-name">${escapeHtml(d.file.name)}</span>
-                <span class="file-item-size">${(d.file.size / 1024).toFixed(0)} KB</span>
-                <button class="file-item-remove" onclick="removeDoc(${i})">×</button>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="prevStep()">Atrás</button>
-          <button class="btn btn-primary" onclick="nextStep()">Continuar</button>
-        </div>
-      `;
-    }
-
-    function addDocs(files) {
-      for (const f of files) {
-        if (f.size > 10 * 1024 * 1024) {
-          alert(`El archivo "${f.name}" excede los 10 MB y no se adjuntó.`);
-          continue;
-        }
-        state.ticket.docs.push({ file: f });
-      }
-      render();
-    }
-
-    function removeDoc(i) {
-      state.ticket.docs.splice(i, 1);
-      render();
-    }
-
-    // --- PASO 5 (o 4 si same-name): Firma ---
-    function stepFirma() {
-      const t = state.ticket;
-      return `
-        <h1 class="card-title">Firma de la instrucción</h1>
-        <p class="card-subtitle">Elegí cómo querés firmar la instrucción de transferencia.</p>
-
-        <div class="sig-tabs">
-          <div class="sig-tab ${t.firmaTipo === 'pantalla' ? 'active' : ''}" onclick="setFirmaTipo('pantalla')">
-            Firmar en pantalla
-          </div>
-          <div class="sig-tab ${t.firmaTipo === 'upload' ? 'active' : ''}" onclick="setFirmaTipo('upload')">
-            Subir formulario firmado
-          </div>
-        </div>
-
-        ${t.firmaTipo === 'pantalla' ? `
-          <div class="field">
-            <label>Firmá en el recuadro con el dedo (celular) o con el mouse (desktop)</label>
-            <div class="sig-canvas-wrap">
-              <canvas id="sigCanvas" class="sig-canvas"></canvas>
-            </div>
-            <div class="sig-actions">
-              <button class="btn btn-secondary" onclick="clearSig()">Borrar y rehacer</button>
-            </div>
-          </div>
-        ` : ''}
-
-        ${t.firmaTipo === 'upload' ? `
-          <div class="field">
-            <label>Subí el formulario firmado (PDF o imagen) <span class="required">*</span></label>
-            <div class="sig-upload-zone" onclick="document.getElementById('firmaFileInput').click()">
-              <input type="file" id="firmaFileInput" accept="image/*,.pdf" onchange="setFirmaFile(this.files[0])">
-              ${t.firmaFile ? `
-                <div class="sig-upload-label">${escapeHtml(t.firmaFile.name)}</div>
-                <div class="sig-upload-hint">${(t.firmaFile.size / 1024).toFixed(0)} KB — hacé clic para cambiar</div>
-              ` : `
-                <div class="sig-upload-label">Hacé clic para subir el archivo</div>
-                <div class="sig-upload-hint">Descargá el formulario en el paso siguiente, firmalo e importalo acá.</div>
-              `}
-            </div>
-          </div>
-        ` : ''}
-
-        <div class="checkbox-field">
-          <input type="checkbox" id="declaracion" ${t.declaracion ? 'checked' : ''} onchange="mutTicket({ declaracion: this.checked })">
-          <label for="declaracion">
-            Declaro bajo juramento que los datos cargados son correctos, que tengo facultades para solicitar esta transferencia, y que la documentación adjunta es auténtica. Acepto que esta instrucción quede registrada electrónicamente con fecha, hora, IP y mail verificado.
-          </label>
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="prevStep()">Atrás</button>
-          <button class="btn btn-primary" onclick="nextStep()">Continuar</button>
-        </div>
-      `;
-    }
-
-    function setFirmaTipo(tipo) {
-      state.ticket.firmaTipo = tipo;
-      render();
-    }
-
-    function setFirmaFile(file) {
-      if (!file) return;
-      if (file.size > 10 * 1024 * 1024) {
-        alert('El archivo excede los 10 MB.');
-        return;
-      }
-      state.ticket.firmaFile = file;
-      render();
-    }
-
-    function initSignaturePad() {
-      const canvas = document.getElementById('sigCanvas');
-      if (!canvas) return;
-      const ratio = Math.max(window.devicePixelRatio || 1, 1);
-      canvas.width = canvas.offsetWidth * ratio;
-      canvas.height = canvas.offsetHeight * ratio;
-      canvas.getContext('2d').scale(ratio, ratio);
-      sigPad = new window.SignaturePad(canvas, {
-        backgroundColor: 'rgb(255,255,255)',
-        penColor: 'rgb(17,17,17)'
-      });
-      // Si ya había firma guardada, restaurarla
-      if (state.ticket.firmaDataUrl) {
-        sigPad.fromDataURL(state.ticket.firmaDataUrl);
-      }
-    }
-
-    function clearSig() {
-      if (sigPad) sigPad.clear();
-      state.ticket.firmaDataUrl = null;
-    }
-
-    // --- PASO FINAL: Review + Submit ---
-    function stepReview() {
-      const t = state.ticket;
-      const alyc = t.alycDestinoIdx === ALYCS_LIST.length - 1
-        ? t.alycNombreOtro
-        : (ALYCS_LIST[t.alycDestinoIdx]?.nombre || '');
-      const motivoLabel = MOTIVOS.find(m => m.value === t.motivo)?.label || t.motivo;
-      const relacionLabel = RELACIONES.find(r => r.value === t.relacion)?.label || t.relacion;
-
-      return `
-        <h1 class="card-title">Revisá todo antes de enviar</h1>
-        <p class="card-subtitle">Si algo está mal, podés volver atrás y corregirlo.</p>
-
-        <div class="summary-section">
-          <h3>Tus datos</h3>
-          <div class="summary-row"><span class="label">Nombre</span><span class="value">${escapeHtml(t.nombre)}</span></div>
-          <div class="summary-row"><span class="label">CUIT</span><span class="value">${escapeHtml(t.cuit)}</span></div>
-          <div class="summary-row"><span class="label">Cuenta comitente origen</span><span class="value">${escapeHtml(t.cuentaOrigen)} (Dep. 265)</span></div>
-          <div class="summary-row"><span class="label">Mail</span><span class="value">${escapeHtml(state.email)}</span></div>
-          ${t.telefono ? `<div class="summary-row"><span class="label">Teléfono</span><span class="value">${escapeHtml(t.telefono)}</span></div>` : ''}
-        </div>
-
-        <div class="summary-section">
-          <h3>Destino</h3>
-          <div class="summary-row"><span class="label">ALYC</span><span class="value">${escapeHtml(alyc)}</span></div>
-          <div class="summary-row"><span class="label">Depositante</span><span class="value">${escapeHtml(t.alycDepositante)}</span></div>
-          <div class="summary-row"><span class="label">Cuenta destino</span><span class="value">${escapeHtml(t.cuentaDestino)}</span></div>
-          <div class="summary-row"><span class="label">Titularidad</span><span class="value">${t.isSameName ? 'Misma titularidad' : 'Terceros'}</span></div>
-          ${!t.isSameName ? `
-            <div class="summary-row"><span class="label">Titular destino</span><span class="value">${escapeHtml(t.titularDestino)}</span></div>
-            <div class="summary-row"><span class="label">CUIT titular destino</span><span class="value">${escapeHtml(t.cuitTitularDestino)}</span></div>
-          ` : ''}
-        </div>
-
-        <div class="summary-section">
-          <h3>Especies</h3>
-          ${t.especies.map(e => `
-            <div class="summary-row">
-              <span class="label">${escapeHtml(e.codigo)}</span>
-              <span class="value">${escapeHtml(e.nombre)} — <strong>${escapeHtml(e.cantidad)}</strong></span>
-            </div>
-          `).join('')}
-        </div>
-
-        ${!t.isSameName ? `
-          <div class="summary-section">
-            <h3>Motivo y documentación</h3>
-            <div class="summary-row"><span class="label">Motivo</span><span class="value">${escapeHtml(motivoLabel)}${t.motivoDetalle ? ` — ${escapeHtml(t.motivoDetalle)}` : ''}</span></div>
-            <div class="summary-row"><span class="label">Relación</span><span class="value">${escapeHtml(relacionLabel)}</span></div>
-            <div class="summary-row"><span class="label">Documentos</span><span class="value">${t.docs.length} archivo${t.docs.length !== 1 ? 's' : ''} adjunto${t.docs.length !== 1 ? 's' : ''}</span></div>
-          </div>
-        ` : ''}
-
-        <div class="summary-section">
-          <h3>Firma</h3>
-          <div class="summary-row">
-            <span class="label">Método</span>
-            <span class="value">${t.firmaTipo === 'pantalla' ? 'Firma digital en pantalla' : 'Formulario firmado adjunto'}</span>
-          </div>
-        </div>
-
-        <div class="alert alert-info">
-          Al enviar, tu solicitud queda registrada con fecha y hora, y pasa a revisión de Compliance. Podés consultar el estado en cualquier momento desde el link que recibirás por mail.
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="prevStep()">Atrás</button>
-          <button class="btn btn-primary" onclick="submitTicket()" ${state.loading ? 'disabled' : ''}>
-            ${state.loading ? '<span class="loader"></span> Enviando...' : 'Enviar solicitud'}
-          </button>
-        </div>
-      `;
-    }
-
-    // ========================================================================
-    // NAVIGATION
-    // ========================================================================
-    function totalSteps() {
-      return state.ticket.isSameName === false ? 6 : 5;
-    }
-
-    function nextStep() {
-      if (!validateCurrentStep()) return;
-      const next = state.wizardStep + 1;
-      if (next > totalSteps()) return;
-      setState({ wizardStep: next, error: '' });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function prevStep() {
-      const prev = Math.max(1, state.wizardStep - 1);
-      // guardar firma actual si estaba en canvas
-      if (sigPad && !sigPad.isEmpty()) {
-        state.ticket.firmaDataUrl = sigPad.toDataURL('image/png');
-      }
-      setState({ wizardStep: prev, error: '' });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function validateCurrentStep() {
-      const t = state.ticket;
-      // Antes de validar, sincronizar inputs que no actualizaron estado vía oninput
-      readCurrentInputs();
-
-      if (state.wizardStep === 1) {
-        if (!t.nombre.trim()) return showError('Ingresá tu nombre.');
-        if (!validateCuit(t.cuit)) return showError('El CUIT no es válido. Usá el formato 20-12345678-9.');
-        if (!t.cuentaOrigen.trim()) return showError('Ingresá tu cuenta comitente.');
-        if (t.cuentaOrigen !== t.cuentaOrigenConfirm) return showError('La confirmación de cuenta no coincide.');
-        return true;
-      }
-      if (state.wizardStep === 2) {
-        if (t.isSameName === null) return showError('Indicá si la cuenta destino es tuya o de un tercero.');
-        if (t.alycDestinoIdx < 0) return showError('Elegí una ALYC destinataria.');
-        if (t.alycDestinoIdx === ALYCS_LIST.length - 1 && !t.alycNombreOtro.trim()) return showError('Ingresá el nombre de la ALYC.');
-        if (!t.alycDepositante.trim()) return showError('Ingresá el número de depositante destino.');
-        if (!t.cuentaDestino.trim()) return showError('Ingresá la cuenta comitente destino.');
-        if (!t.isSameName) {
-          if (!t.titularDestino.trim()) return showError('Ingresá el nombre del titular destino.');
-          if (!validateCuit(t.cuitTitularDestino)) return showError('El CUIT del titular destino no es válido.');
-        }
-        return true;
-      }
-      if (state.wizardStep === 3) {
-        for (const e of t.especies) {
-          if (!e.codigo.trim() || !e.nombre.trim() || !e.cantidad || parseFloat(e.cantidad) <= 0) {
-            return showError('Completá todas las especies con código, nombre y cantidad mayor a cero.');
-          }
-        }
-        return true;
-      }
-      // Paso motivo/docs (solo terceros)
-      if (state.wizardStep === 4 && !t.isSameName) {
-        if (!t.motivo) return showError('Elegí un motivo.');
-        if (t.motivo === 'otro' && !t.motivoDetalle.trim()) return showError('Detallá el motivo.');
-        if (!t.relacion) return showError('Indicá la relación con el destinatario.');
-        if (t.docs.length === 0) return showError('Adjuntá al menos un documento respaldatorio.');
-        return true;
-      }
-      // Paso firma
-      const firmaStep = t.isSameName === false ? 5 : 4;
-      if (state.wizardStep === firmaStep) {
-        if (!t.firmaTipo) return showError('Elegí cómo vas a firmar.');
-        if (t.firmaTipo === 'pantalla') {
-          if (!sigPad || sigPad.isEmpty()) return showError('Firmá en el recuadro antes de continuar.');
-          t.firmaDataUrl = sigPad.toDataURL('image/png');
-        }
-        if (t.firmaTipo === 'upload' && !t.firmaFile) return showError('Subí el formulario firmado.');
-        if (!t.declaracion) return showError('Tenés que aceptar la declaración jurada.');
-        return true;
-      }
-      return true;
-    }
-
-    function readCurrentInputs() {
-      // Lee valores de los inputs presentes en el DOM y actualiza state.ticket
-      const fields = [
-        'nombre', 'cuit', 'telefono', 'cuentaOrigen', 'cuentaOrigenConfirm',
-        'alycDepositante', 'cuentaDestino', 'titularDestino', 'cuitTitularDestino',
-        'alycNombreOtro', 'motivoDetalle'
-      ];
-      for (const f of fields) {
-        const el = document.getElementById(f);
-        if (el) state.ticket[f] = el.value;
-      }
-    }
-
-    function showError(msg) {
-      setState({ error: msg });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return false;
-    }
-
-    function validateCuit(cuit) {
-      if (!cuit) return false;
-      const clean = cuit.replace(/[-\s]/g, '');
-      if (!/^\d{11}$/.test(clean)) return false;
-      // Validación del dígito verificador
-      const mult = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
-      let sum = 0;
-      for (let i = 0; i < 10; i++) sum += parseInt(clean[i]) * mult[i];
-      const mod = sum % 11;
-      const verif = mod === 0 ? 0 : (mod === 1 ? 9 : 11 - mod);
-      return verif === parseInt(clean[10]);
-    }
-
-    // ========================================================================
-    // SUBMIT
-    // ========================================================================
-    async function submitTicket() {
-      setState({ loading: true, error: '' });
-      const t = state.ticket;
-
-      try {
-        // 1. Crear el ticket en DB
-        const alycNombre = t.alycDestinoIdx === ALYCS_LIST.length - 1
-          ? t.alycNombreOtro
-          : ALYCS_LIST[t.alycDestinoIdx]?.nombre;
-
-        const ticketPayload = {
-          status: 'en_revision',
-          comercial_slug: state.comercialSlug,
-          email_client: state.email,
-          nombre_client: t.nombre,
-          cuit_client: t.cuit,
-          cuenta_comitente_origen: t.cuentaOrigen,
-          telefono_client: t.telefono,
-          alyc_destino_nombre: alycNombre,
-          alyc_destino_depositante: t.alycDepositante,
-          cuenta_comitente_destino: t.cuentaDestino,
-          titular_destino_nombre: t.isSameName ? t.nombre : t.titularDestino,
-          titular_destino_cuit: t.isSameName ? t.cuit : t.cuitTitularDestino,
-          is_same_name: t.isSameName,
-          motivo: t.isSameName ? null : t.motivo,
-          motivo_detalle: t.isSameName ? null : t.motivoDetalle,
-          relacion_destinatario: t.isSameName ? null : t.relacion,
-          especies: t.especies.map(e => ({
-            codigo: e.codigo,
-            nombre: e.nombre,
-            cantidad: parseFloat(e.cantidad)
-          })),
-          firma_tipo: t.firmaTipo,
-          submitted_at: new Date().toISOString(),
-          user_agent: navigator.userAgent
-        };
-
-        const { data: ticket, error: err1 } = await sb.from('tickets')
-          .insert(ticketPayload).select().single();
-        if (err1) throw err1;
-
-        // 2. Subir firma
-        let firmaPath = null;
-        if (t.firmaTipo === 'pantalla' && t.firmaDataUrl) {
-          const blob = await (await fetch(t.firmaDataUrl)).blob();
-          firmaPath = `${ticket.id}/firma.png`;
-          const { error: eSig } = await sb.storage.from('firmas').upload(firmaPath, blob, {
-            contentType: 'image/png', upsert: true
-          });
-          if (eSig) throw eSig;
-        } else if (t.firmaTipo === 'upload' && t.firmaFile) {
-          const ext = t.firmaFile.name.split('.').pop();
-          firmaPath = `${ticket.id}/firma.${ext}`;
-          const { error: eSig } = await sb.storage.from('firmas').upload(firmaPath, t.firmaFile, {
-            upsert: true
-          });
-          if (eSig) throw eSig;
-        }
-
-        // 3. Subir documentos respaldatorios
-        for (let i = 0; i < t.docs.length; i++) {
-          const d = t.docs[i];
-          const ext = d.file.name.split('.').pop();
-          const path = `${ticket.id}/doc-${i + 1}.${ext}`;
-          const { error: eDoc } = await sb.storage.from('documentos').upload(path, d.file, {
-            upsert: true
-          });
-          if (eDoc) throw eDoc;
-          await sb.from('ticket_documents').insert({
-            ticket_id: ticket.id,
-            tipo: 'respaldatorio',
-            nombre_original: d.file.name,
-            storage_path: path,
-            mime_type: d.file.type,
-            size_bytes: d.file.size,
-            uploaded_by_type: 'cliente'
-          });
-        }
-
-        // 4. Generar PDF del formulario
-        const pdfBlob = await generarFormularioPDF(ticket, t, firmaPath);
-        const pdfPath = `${ticket.id}/formulario.pdf`;
-        const { error: ePdf } = await sb.storage.from('formularios').upload(pdfPath, pdfBlob, {
-          contentType: 'application/pdf', upsert: true
-        });
-        if (ePdf) throw ePdf;
-
-        // 5. Actualizar ticket con paths
-        await sb.from('tickets').update({
-          firma_storage_path: firmaPath,
-          formulario_pdf_path: pdfPath
-        }).eq('id', ticket.id);
-
-        // 6. Registrar evento
-        await sb.from('ticket_events').insert({
-          ticket_id: ticket.id,
-          event_type: 'submitted',
-          actor_type: 'cliente',
-          actor_email: state.email,
-          payload: { via: 'wizard' }
-        });
-
-        setState({
-          loading: false,
-          view: 'success',
-          savedTicket: ticket,
-          ticket: newTicketState()
-        });
-      } catch (err) {
-        console.error(err);
-        setState({ loading: false, error: err.message || 'Hubo un error al enviar. Intentá de nuevo.' });
-      }
-    }
-
-    // ========================================================================
-    // PDF GENERATION
-    // ========================================================================
-    async function generarFormularioPDF(ticket, t, firmaPath) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-      const W = 210, margin = 20;
-      let y = margin;
-
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      const fecha = new Date().toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
-      doc.text(`Ciudad Autónoma de Buenos Aires, ${fecha}.`, margin, y);
-      y += 12;
-
-      doc.setFont('helvetica', 'bold');
-      doc.text('Señores', margin, y); y += 5;
-      doc.text('Cocos Capital S.A.', margin, y); y += 5;
-      doc.setFont('helvetica', 'normal');
-      doc.text('Presente', margin, y); y += 10;
-
-      doc.setFont('helvetica', 'bold');
-      doc.text('Referencia:', margin, y);
-      doc.setFont('helvetica', 'normal');
-      doc.text(' Instrucción envío de títulos local', margin + 22, y);
-      y += 10;
-
-      doc.text('De mi consideración:', margin, y); y += 8;
-
-      const alycNombre = t.alycDestinoIdx === ALYCS_LIST.length - 1
-        ? t.alycNombreOtro
-        : ALYCS_LIST[t.alycDestinoIdx]?.nombre;
-      const titularDestino = t.isSameName ? t.nombre : t.titularDestino;
-
-      const parrafo = `Por medio de la presente solicito a Uds. enviar las siguientes tenencias desde mi cuenta comitente N° ${t.cuentaOrigen}, depositante N° 265 Cocos Capital S.A., hacia la cuenta comitente N° ${t.cuentaDestino} cuya titularidad corresponde a ${titularDestino}.`;
-      const lines = doc.splitTextToSize(parrafo, W - 2 * margin);
-      doc.text(lines, margin, y); y += lines.length * 5 + 6;
-
-      doc.setFont('helvetica', 'bold');
-      doc.text('Datos de la depositante destino:', margin, y); y += 6;
-      doc.setFont('helvetica', 'normal');
-      doc.text(`Nombre: ${alycNombre}`, margin, y); y += 5;
-      doc.text(`Número de depositante: ${t.alycDepositante}`, margin, y); y += 5;
-      doc.text(`Cuenta comitente: ${t.cuentaDestino}`, margin, y); y += 10;
-
-      // Tabla de especies
-      doc.setFont('helvetica', 'bold');
-      doc.text('Especies a transferir:', margin, y); y += 6;
-      doc.setFontSize(9);
-      const col1 = margin, col2 = margin + 40, col3 = margin + 130;
-      doc.text('Código', col1, y);
-      doc.text('Nombre de la especie', col2, y);
-      doc.text('Cantidad', col3, y);
-      y += 2;
-      doc.setLineWidth(0.2);
-      doc.line(margin, y, W - margin, y); y += 5;
-      doc.setFont('helvetica', 'normal');
-      for (const e of t.especies) {
-        doc.text(String(e.codigo), col1, y);
-        doc.text(String(e.nombre), col2, y);
-        doc.text(String(e.cantidad), col3, y);
-        y += 5;
-      }
-      doc.setFontSize(8);
-      doc.setTextColor(100);
-      y += 2;
-      doc.text('Cantidades expresadas en números, equivalentes en letras según estándar bursátil.', margin, y);
-      doc.setTextColor(0);
-      doc.setFontSize(10);
-      y += 10;
-
-      if (!t.isSameName) {
-        const motivoLabel = MOTIVOS.find(m => m.value === t.motivo)?.label || t.motivo;
-        const relacionLabel = RELACIONES.find(r => r.value === t.relacion)?.label || t.relacion;
-        doc.setFont('helvetica', 'bold');
-        doc.text('Transferencia a terceros:', margin, y); y += 6;
-        doc.setFont('helvetica', 'normal');
-        doc.text(`Motivo: ${motivoLabel}${t.motivoDetalle ? ' — ' + t.motivoDetalle : ''}`, margin, y); y += 5;
-        doc.text(`Relación con el destinatario: ${relacionLabel}`, margin, y); y += 10;
-      }
-
-      const aviso = 'Tengo en cuenta que la transferencia puede demorar hasta 5 días hábiles desde su instrucción en ser procesada.';
-      const avisoLines = doc.splitTextToSize(aviso, W - 2 * margin);
-      doc.text(avisoLines, margin, y); y += avisoLines.length * 5 + 8;
-
-      doc.text('Sin otro particular saludo a ustedes muy atentamente,', margin, y); y += 16;
-
-      // Firma
-      if (t.firmaTipo === 'pantalla' && t.firmaDataUrl) {
-        doc.addImage(t.firmaDataUrl, 'PNG', margin, y, 60, 20);
-        y += 22;
-      } else {
-        doc.line(margin, y, margin + 60, y); y += 5;
-      }
-      doc.text(`${t.nombre}`, margin, y); y += 5;
-      doc.text(`CUIT ${t.cuit}`, margin, y); y += 12;
-
-      // Footer de auditoría
-      doc.setFontSize(8);
-      doc.setTextColor(120);
-      doc.text('─'.repeat(80), margin, y); y += 4;
-      doc.text(`Firmado electrónicamente por: ${state.email} (identidad verificada por código OTP)`, margin, y); y += 4;
-      doc.text(`Fecha y hora: ${new Date().toLocaleString('es-AR')}`, margin, y); y += 4;
-      doc.text(`Ticket N°: ${ticket.numero}`, margin, y); y += 4;
-      doc.text(`User-Agent: ${navigator.userAgent.substring(0, 100)}`, margin, y);
-
-      return doc.output('blob');
-    }
-
-    // ========================================================================
-    // VIEW: SUCCESS
-    // ========================================================================
-    function viewSuccess() {
-      const t = state.savedTicket;
-      const statusUrl = `${window.location.origin}${window.location.pathname}?ticket=${t.id}`;
-      return `
-        <div class="card">
-          <div class="success-hero">
-            <div class="success-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            </div>
-            <h1 class="success-title">Solicitud enviada</h1>
-            <p class="success-subtitle">Tu solicitud #${t.numero} quedó registrada y pasó a revisión de Compliance.</p>
-          </div>
-
-          <div class="alert alert-info">
-            <strong>Próximos pasos:</strong>
-            <ul style="margin: 8px 0 0 20px;">
-              <li>Compliance revisa la solicitud (hasta 24hs hábiles).</li>
-              <li>Si necesitamos más información, te vamos a contactar por mail.</li>
-              <li>Una vez aprobada, Títulos ejecuta la transferencia (hasta 5 días hábiles).</li>
-              <li>Al finalizar, te enviamos el comprobante por mail.</li>
-            </ul>
-          </div>
-
-          <div class="field">
-            <label>Link permanente para ver el estado:</label>
-            <input type="text" class="input" value="${statusUrl}" readonly onclick="this.select()">
-            <div class="hint">Guardá este link. También te lo enviamos por mail.</div>
-          </div>
-
-          <div class="btn-row">
-            <button class="btn btn-primary btn-block" onclick="goToStatus('${t.id}')">Ver estado de la solicitud</button>
-          </div>
-        </div>
-      `;
-    }
-
-    function goToStatus(id) {
-      window.location.search = `?ticket=${id}`;
-    }
-
-    // ========================================================================
-    // VIEW: STATUS
-    // ========================================================================
-    async function loadStatus() {
-      state.view = 'loading';
-      render();
-
+    async function boot() {
       const { data: { session } } = await sb.auth.getSession();
       if (!session) {
-        // necesita autenticarse para ver el status
-        state.view = 'landing';
-        state.error = 'Primero necesitamos verificar tu identidad para mostrarte el estado de la solicitud.';
-        render();
+        setState({ view: 'login' });
+        return;
+      }
+      await loadProfile(session.user);
+    }
+
+    async function loadProfile(user) {
+      const { data: profile, error } = await sb.from('profiles')
+        .select('*').eq('id', user.id).single();
+
+      if (error || !profile) {
+        setState({
+          view: 'login',
+          error: 'No encontramos un perfil asociado a este usuario. Contactá al admin.'
+        });
+        await sb.auth.signOut();
         return;
       }
 
-      try {
-        const { data: ticket, error: e1 } = await sb.from('tickets')
-          .select('*').eq('id', state.statusTicketId).single();
-        if (e1 || !ticket) {
-          state.view = 'not-found';
-          render();
-          return;
-        }
+      if (!profile.active) {
+        setState({
+          view: 'login',
+          error: 'Tu usuario está inactivo. Contactá al admin.'
+        });
+        await sb.auth.signOut();
+        return;
+      }
 
-        const { data: events } = await sb.from('ticket_events')
-          .select('*').eq('ticket_id', ticket.id).order('created_at', { ascending: false });
+      const defaultNav = defaultNavForRole(profile.role);
+      state.user = user;
+      state.profile = profile;
+      state.nav = defaultNav;
+      state.view = 'app';
+      render();
+      await loadTickets();
+    }
 
-        const { data: comments } = await sb.from('ticket_comments')
-          .select('*').eq('ticket_id', ticket.id).eq('is_internal', false).order('created_at', { ascending: true });
-
-        state.statusTicket = ticket;
-        state.statusEvents = events || [];
-        state.statusComments = comments || [];
-        state.email = session.user.email;
-        state.view = 'status';
-        render();
-      } catch (err) {
-        console.error(err);
-        state.view = 'not-found';
-        render();
+    function defaultNavForRole(role) {
+      switch (role) {
+        case 'comercial': return 'mis-tickets';
+        case 'soporte': return 'todos';
+        case 'compliance': return 'en-revision';
+        case 'titulos': return 'pendientes-titulos';
+        case 'admin': return 'todos';
+        default: return 'todos';
       }
     }
 
-    function viewStatus() {
-      const t = state.statusTicket;
-      const statusLabels = {
-        borrador: 'Borrador',
-        en_revision: 'En revisión',
-        info_pedida: 'Esperando tu respuesta',
-        aprobada: 'Aprobada',
-        en_liquidacion: 'En liquidación',
-        completada: 'Completada',
-        rechazada: 'Rechazada'
-      };
-
-      return `
-        <div class="status-header">
-          <span class="status-badge ${t.status}">${statusLabels[t.status]}</span>
-          <h1 class="status-title">Solicitud #${t.numero}</h1>
-          <p class="status-meta">Creada el ${formatDate(t.created_at)}</p>
-        </div>
-
-        ${t.status === 'info_pedida' ? `
-          <div class="alert alert-warning">
-            <strong>Compliance solicitó información adicional.</strong> Revisá el hilo de comentarios abajo y respondé con lo que te pidieron.
-          </div>
-        ` : ''}
-        ${t.status === 'rechazada' ? `
-          <div class="alert alert-danger">
-            <strong>Solicitud rechazada.</strong> Revisá los comentarios para ver el motivo.
-          </div>
-        ` : ''}
-        ${t.status === 'completada' && t.comprobante_path ? `
-          <div class="alert alert-success">
-            <strong>Transferencia completada.</strong> <a href="#" onclick="downloadComprobante(); return false;" style="text-decoration: underline; font-weight: 600;">Descargar comprobante</a> ${t.numero_operacion ? `· Operación: <strong>${escapeHtml(t.numero_operacion)}</strong>` : ''}
-          </div>
-        ` : ''}
-
-        <div class="card">
-          <div class="summary-section">
-            <h3>Resumen</h3>
-            <div class="summary-row"><span class="label">Origen</span><span class="value">Cuenta ${escapeHtml(t.cuenta_comitente_origen)} (Cocos, Dep. 265)</span></div>
-            <div class="summary-row"><span class="label">Destino</span><span class="value">${escapeHtml(t.alyc_destino_nombre)} — Cuenta ${escapeHtml(t.cuenta_comitente_destino)} (Dep. ${escapeHtml(t.alyc_destino_depositante)})</span></div>
-            <div class="summary-row"><span class="label">Titularidad</span><span class="value">${t.is_same_name ? 'Misma titularidad' : 'A terceros'}</span></div>
-            <div class="summary-row"><span class="label">Especies</span><span class="value">${(t.especies || []).length} especie${(t.especies || []).length !== 1 ? 's' : ''}</span></div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 20px;">
-          <h2 class="card-title" style="font-size: 16px;">Historial</h2>
-          <div class="timeline" style="margin-top: 16px;">
-            ${state.statusEvents.length === 0 ? `<p style="color: var(--text-muted);">Sin eventos aún.</p>` : ''}
-            ${state.statusEvents.map((ev, i) => `
-              <div class="timeline-event ${i > 0 ? 'muted' : ''}">
-                <div class="timeline-time">${formatDate(ev.created_at)}</div>
-                <div class="timeline-desc">${formatEvent(ev)}</div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 20px;">
-          <h2 class="card-title" style="font-size: 16px;">Mensajes</h2>
-          <div class="comment-thread">
-            ${state.statusComments.length === 0 ? `<p style="color: var(--text-muted); font-size: 14px;">No hay mensajes aún.</p>` : ''}
-            ${state.statusComments.map(c => `
-              <div class="comment">
-                <div class="comment-header">
-                  <span class="comment-author">${c.author_type === 'cliente' ? 'Vos' : 'Cocos Capital'}</span>
-                  <span>${formatDate(c.created_at)}</span>
-                </div>
-                <div class="comment-body">${escapeHtml(c.message)}</div>
-              </div>
-            `).join('')}
-          </div>
-
-          ${t.status === 'info_pedida' ? `
-            <div class="field" style="margin-top: 16px;">
-              <label for="newComment">Responder</label>
-              <textarea id="newComment" class="textarea" placeholder="Escribí tu respuesta..."></textarea>
-            </div>
-            <button class="btn btn-primary btn-block" onclick="sendComment()" ${state.loading ? 'disabled' : ''}>
-              ${state.loading ? '<span class="loader"></span>' : ''} Enviar respuesta
-            </button>
-          ` : ''}
-        </div>
-      `;
-    }
-
-    async function sendComment() {
-      const el = document.getElementById('newComment');
-      const msg = el.value.trim();
-      if (!msg) return;
+    // ========================================================================
+    // DATA LOADING
+    // ========================================================================
+    async function loadTickets() {
       setState({ loading: true });
       try {
-        await sb.from('ticket_comments').insert({
-          ticket_id: state.statusTicket.id,
-          author_type: 'cliente',
-          author_email: state.email,
-          is_internal: false,
-          message: msg
-        });
-        await sb.from('ticket_events').insert({
-          ticket_id: state.statusTicket.id,
-          event_type: 'info_provided',
-          actor_type: 'cliente',
-          actor_email: state.email
-        });
-        // Volver el ticket a en_revision
-        await sb.from('tickets').update({ status: 'en_revision' })
-          .eq('id', state.statusTicket.id);
-        await loadStatus();
+        let query = sb.from('tickets').select('*').order('created_at', { ascending: false });
+
+        // Por defecto el RLS ya restringe; acá filtramos adicionalmente según tab
+        switch (state.nav) {
+          case 'en-revision': query = query.eq('status', 'en_revision'); break;
+          case 'info-pedida': query = query.in('status', ['info_pedida']); break;
+          case 'pendientes-titulos': query = query.eq('status', 'aprobada'); break;
+          case 'en-liquidacion': query = query.eq('status', 'en_liquidacion'); break;
+          case 'completadas': query = query.eq('status', 'completada'); break;
+          case 'rechazadas': query = query.eq('status', 'rechazada'); break;
+          default: break; // 'todos' o 'mis-tickets' no filtra (RLS hace lo suyo)
+        }
+
+        const { data, error } = await query;
+        if (error) throw error;
+        setState({ tickets: data || [], loading: false });
       } catch (err) {
         setState({ loading: false, error: err.message });
       }
     }
 
-    async function downloadComprobante() {
-      const t = state.statusTicket;
-      if (!t.comprobante_path) return;
-      const { data, error } = await sb.storage.from('comprobantes').createSignedUrl(t.comprobante_path, 300);
-      if (error) { alert('No pudimos generar el link de descarga.'); return; }
+    async function loadStats() {
+      if (state.profile.role !== 'comercial') return;
+      const { data } = await sb.from('comercial_stats')
+        .select('*').eq('comercial_slug', state.profile.comercial_slug).maybeSingle();
+      if (data) setState({ stats: data });
+    }
+
+    async function loadTicketDetail(ticketId) {
+      setState({ loading: true });
+      try {
+        const [tRes, evRes, cmRes, docRes] = await Promise.all([
+          sb.from('tickets').select('*').eq('id', ticketId).single(),
+          sb.from('ticket_events').select('*').eq('ticket_id', ticketId).order('created_at', { ascending: false }),
+          sb.from('ticket_comments').select('*').eq('ticket_id', ticketId).order('created_at', { ascending: true }),
+          sb.from('ticket_documents').select('*').eq('ticket_id', ticketId).order('uploaded_at', { ascending: true })
+        ]);
+        if (tRes.error) throw tRes.error;
+        setState({
+          selectedTicket: tRes.data,
+          selectedEvents: evRes.data || [],
+          selectedComments: cmRes.data || [],
+          selectedDocs: docRes.data || [],
+          loading: false
+        });
+      } catch (err) {
+        setState({ loading: false, error: err.message });
+      }
+    }
+
+    // ========================================================================
+    // AUTH
+    // ========================================================================
+    async function login() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) {
+        setState({ error: 'Completá mail y password.' });
+        return;
+      }
+      setState({ loading: true, error: '' });
+      try {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        await loadProfile(data.user);
+      } catch (err) {
+        setState({ loading: false, error: 'Usuario o password incorrectos.' });
+      }
+    }
+
+    async function logout() {
+      await sb.auth.signOut();
+      state = {
+        view: 'login', user: null, profile: null, nav: null,
+        tickets: [], selectedTicket: null, filters: { search: '', status: '' },
+        loading: false, error: '', modal: null
+      };
+      render();
+    }
+
+    // ========================================================================
+    // ACTIONS (ticket workflow)
+    // ========================================================================
+    async function actionApprove() {
+      const comment = document.getElementById('actionComment')?.value.trim() || '';
+      setState({ loading: true });
+      try {
+        const t = state.selectedTicket;
+        await sb.from('tickets').update({
+          status: 'aprobada',
+          compliance_reviewed_at: new Date().toISOString(),
+          compliance_reviewed_by: state.profile.id
+        }).eq('id', t.id);
+        await sb.from('ticket_events').insert({
+          ticket_id: t.id, event_type: 'approved',
+          actor_type: 'interno', actor_id: state.profile.id, actor_email: state.profile.email,
+          payload: { comment }
+        });
+        if (comment) {
+          await sb.from('ticket_comments').insert({
+            ticket_id: t.id, author_type: 'interno', author_id: state.profile.id,
+            author_email: state.profile.email, author_name: state.profile.full_name,
+            is_internal: false, message: comment
+          });
+        }
+        closeModal();
+        await loadTicketDetail(t.id);
+      } catch (err) {
+        setState({ loading: false, error: err.message });
+      }
+    }
+
+    async function actionReject() {
+      const motivo = document.getElementById('actionComment')?.value.trim() || '';
+      if (!motivo) { alert('El motivo de rechazo es obligatorio.'); return; }
+      setState({ loading: true });
+      try {
+        const t = state.selectedTicket;
+        await sb.from('tickets').update({
+          status: 'rechazada',
+          compliance_reviewed_at: new Date().toISOString(),
+          compliance_reviewed_by: state.profile.id
+        }).eq('id', t.id);
+        await sb.from('ticket_events').insert({
+          ticket_id: t.id, event_type: 'rejected',
+          actor_type: 'interno', actor_id: state.profile.id, actor_email: state.profile.email,
+          payload: { motivo }
+        });
+        await sb.from('ticket_comments').insert({
+          ticket_id: t.id, author_type: 'interno', author_id: state.profile.id,
+          author_email: state.profile.email, author_name: state.profile.full_name,
+          is_internal: false, message: `Motivo de rechazo: ${motivo}`
+        });
+        closeModal();
+        await loadTicketDetail(t.id);
+      } catch (err) {
+        setState({ loading: false, error: err.message });
+      }
+    }
+
+    async function actionRequestInfo() {
+      const msg = document.getElementById('actionComment')?.value.trim() || '';
+      if (!msg) { alert('Escribí qué información necesitás.'); return; }
+      setState({ loading: true });
+      try {
+        const t = state.selectedTicket;
+        await sb.from('tickets').update({ status: 'info_pedida' }).eq('id', t.id);
+        await sb.from('ticket_events').insert({
+          ticket_id: t.id, event_type: 'info_requested',
+          actor_type: 'interno', actor_id: state.profile.id, actor_email: state.profile.email
+        });
+        await sb.from('ticket_comments').insert({
+          ticket_id: t.id, author_type: 'interno', author_id: state.profile.id,
+          author_email: state.profile.email, author_name: state.profile.full_name,
+          is_internal: false, message: msg
+        });
+        closeModal();
+        await loadTicketDetail(t.id);
+      } catch (err) {
+        setState({ loading: false, error: err.message });
+      }
+    }
+
+    async function actionStartLiquidation() {
+      setState({ loading: true });
+      try {
+        const t = state.selectedTicket;
+        await sb.from('tickets').update({
+          status: 'en_liquidacion',
+          liquidation_started_at: new Date().toISOString(),
+          liquidation_started_by: state.profile.id
+        }).eq('id', t.id);
+        await sb.from('ticket_events').insert({
+          ticket_id: t.id, event_type: 'liquidation_started',
+          actor_type: 'interno', actor_id: state.profile.id, actor_email: state.profile.email
+        });
+        await loadTicketDetail(t.id);
+      } catch (err) {
+        setState({ loading: false, error: err.message });
+      }
+    }
+
+    async function actionComplete() {
+      const numero = document.getElementById('numeroOperacion')?.value.trim();
+      const file = document.getElementById('comprobanteFile')?.files[0];
+      if (!numero) { alert('Ingresá el número de operación.'); return; }
+      if (!file) { alert('Subí el comprobante.'); return; }
+
+      setState({ loading: true });
+      try {
+        const t = state.selectedTicket;
+        const ext = file.name.split('.').pop();
+        const path = `${t.id}/comprobante.${ext}`;
+        const { error: upErr } = await sb.storage.from('comprobantes').upload(path, file, { upsert: true });
+        if (upErr) throw upErr;
+
+        await sb.from('tickets').update({
+          status: 'completada',
+          numero_operacion: numero,
+          comprobante_path: path,
+          completed_at: new Date().toISOString()
+        }).eq('id', t.id);
+
+        await sb.from('ticket_events').insert({
+          ticket_id: t.id, event_type: 'completed',
+          actor_type: 'interno', actor_id: state.profile.id, actor_email: state.profile.email,
+          payload: { numero_operacion: numero }
+        });
+
+        closeModal();
+        await loadTicketDetail(t.id);
+      } catch (err) {
+        setState({ loading: false, error: err.message });
+      }
+    }
+
+    async function actionReprocess() {
+      const motivo = document.getElementById('actionComment')?.value.trim() || '';
+      if (!motivo) { alert('Indicá el motivo del reproceso.'); return; }
+      setState({ loading: true });
+      try {
+        const t = state.selectedTicket;
+        await sb.from('tickets').update({ status: 'en_revision' }).eq('id', t.id);
+        await sb.from('ticket_events').insert({
+          ticket_id: t.id, event_type: 'reprocessed',
+          actor_type: 'interno', actor_id: state.profile.id, actor_email: state.profile.email,
+          payload: { motivo }
+        });
+        await sb.from('ticket_comments').insert({
+          ticket_id: t.id, author_type: 'interno', author_id: state.profile.id,
+          author_email: state.profile.email, author_name: state.profile.full_name,
+          is_internal: true, message: `[Reprocess de Títulos] ${motivo}`
+        });
+        closeModal();
+        await loadTicketDetail(t.id);
+      } catch (err) {
+        setState({ loading: false, error: err.message });
+      }
+    }
+
+    async function addComment(isInternal) {
+      const msg = document.getElementById('newCommentText').value.trim();
+      if (!msg) return;
+      setState({ loading: true });
+      try {
+        const t = state.selectedTicket;
+        await sb.from('ticket_comments').insert({
+          ticket_id: t.id, author_type: 'interno', author_id: state.profile.id,
+          author_email: state.profile.email, author_name: state.profile.full_name,
+          is_internal: isInternal, message: msg
+        });
+        await sb.from('ticket_events').insert({
+          ticket_id: t.id, event_type: 'comment_added',
+          actor_type: 'interno', actor_id: state.profile.id, actor_email: state.profile.email,
+          payload: { is_internal: isInternal }
+        });
+        await loadTicketDetail(t.id);
+      } catch (err) {
+        setState({ loading: false, error: err.message });
+      }
+    }
+
+    // ========================================================================
+    // MODAL HELPERS
+    // ========================================================================
+    function openModal(name, payload) { setState({ modal: name, modalPayload: payload }); }
+    function closeModal() { setState({ modal: null, modalPayload: null }); }
+
+    // ========================================================================
+    // RENDER
+    // ========================================================================
+    function render() {
+      const root = document.getElementById('app');
+      let html;
+      if (state.view === 'loading') html = `<div class="page-loader"><div class="loader"></div></div>`;
+      else if (state.view === 'login') html = viewLogin();
+      else if (state.view === 'app') html = viewApp();
+      root.innerHTML = html;
+    }
+
+    // --- LOGIN ---
+    function viewLogin() {
+      return `
+        <div class="login-wrap">
+          <div class="login-card">
+            <div class="login-logo">
+              <div class="logo-mark">C</div>
+              <span>Cocos Capital — Interno</span>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
+              Ingresá con tu mail corporativo de Cocos.
+            </p>
+            ${state.error ? `<div class="alert alert-danger">${escapeHtml(state.error)}</div>` : ''}
+            <div class="field">
+              <label>Mail corporativo</label>
+              <input type="email" id="loginEmail" class="input" autocomplete="email" onkeydown="if(event.key==='Enter') document.getElementById('loginPassword').focus()">
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input type="password" id="loginPassword" class="input" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()">
+            </div>
+            <button class="btn btn-primary btn-block" onclick="login()" ${state.loading ? 'disabled' : ''}>
+              ${state.loading ? '<span class="loader"></span>' : ''} Entrar
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- APP SHELL ---
+    function viewApp() {
+      return `
+        <div class="app-layout">
+          ${sidebar()}
+          <main class="main">
+            ${state.selectedTicket ? viewDetail() : viewList()}
+          </main>
+        </div>
+        ${state.modal ? renderModal() : ''}
+      `;
+    }
+
+    function sidebar() {
+      const p = state.profile;
+      const roleLabel = {
+        comercial: 'Comercial', soporte: 'Soporte', compliance: 'Compliance',
+        titulos: 'Títulos', admin: 'Admin'
+      }[p.role];
+
+      return `
+        <aside class="sidebar">
+          <div class="sidebar-logo">
+            <div class="logo-mark">C</div>
+            <span>Cocos Interno</span>
+          </div>
+
+          <div class="sidebar-user">
+            <div class="sidebar-user-name">${escapeHtml(p.full_name || p.email)}</div>
+            <div class="sidebar-user-role">${roleLabel}${p.comercial_slug ? ` · ${escapeHtml(p.comercial_slug)}` : ''}</div>
+          </div>
+
+          ${navForRole(p.role)}
+
+          <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
+          </div>
+        </aside>
+      `;
+    }
+
+    function navForRole(role) {
+      const items = [];
+      if (role === 'comercial') {
+        items.push({ id: 'mis-tickets', label: 'Mis tickets' });
+        items.push({ id: 'mi-link', label: 'Mi link de referidos' });
+      } else if (role === 'soporte') {
+        items.push({ id: 'todos', label: 'Todos los tickets' });
+        items.push({ id: 'generar-link', label: 'Generar link para cliente' });
+      } else if (role === 'compliance') {
+        items.push({ id: 'en-revision', label: 'En revisión' });
+        items.push({ id: 'info-pedida', label: 'Esperando cliente' });
+        items.push({ id: 'todos', label: 'Todos los tickets' });
+        items.push({ id: 'rechazadas', label: 'Rechazadas' });
+      } else if (role === 'titulos') {
+        items.push({ id: 'pendientes-titulos', label: 'Pendientes' });
+        items.push({ id: 'en-liquidacion', label: 'En liquidación' });
+        items.push({ id: 'completadas', label: 'Completadas' });
+      } else if (role === 'admin') {
+        items.push({ id: 'todos', label: 'Todos los tickets' });
+        items.push({ id: 'en-revision', label: 'En revisión' });
+        items.push({ id: 'pendientes-titulos', label: 'Pendientes Títulos' });
+        items.push({ id: 'completadas', label: 'Completadas' });
+        items.push({ id: 'usuarios', label: 'Usuarios' });
+      }
+
+      return `<nav>${items.map(i => `
+        <div class="nav-item ${state.nav === i.id ? 'active' : ''}" onclick="navTo('${i.id}')">
+          <span>${i.label}</span>
+        </div>
+      `).join('')}</nav>`;
+    }
+
+    async function navTo(id) {
+      state.nav = id;
+      state.selectedTicket = null;
+      state.error = '';
+      render();
+      if (['mis-tickets', 'todos', 'en-revision', 'info-pedida', 'pendientes-titulos',
+           'en-liquidacion', 'completadas', 'rechazadas'].includes(id)) {
+        await loadTickets();
+      }
+      if (id === 'mi-link' && state.profile.role === 'comercial') {
+        await loadStats();
+      }
+    }
+
+    // --- LIST VIEWS ---
+    function viewList() {
+      if (state.nav === 'mi-link') return viewMiLink();
+      if (state.nav === 'generar-link') return viewGenerarLink();
+      if (state.nav === 'usuarios') return viewUsuarios();
+      return viewTicketsList();
+    }
+
+    function viewTicketsList() {
+      const navLabels = {
+        'mis-tickets': 'Mis tickets',
+        'todos': 'Todos los tickets',
+        'en-revision': 'Tickets en revisión',
+        'info-pedida': 'Esperando respuesta del cliente',
+        'pendientes-titulos': 'Pendientes de liquidación',
+        'en-liquidacion': 'En liquidación',
+        'completadas': 'Completadas',
+        'rechazadas': 'Rechazadas'
+      };
+
+      const filtered = state.tickets.filter(t => {
+        if (state.filters.search) {
+          const q = state.filters.search.toLowerCase();
+          return (t.email_client || '').toLowerCase().includes(q) ||
+                 (t.nombre_client || '').toLowerCase().includes(q) ||
+                 (t.cuit_client || '').toLowerCase().includes(q) ||
+                 String(t.numero).includes(q);
+        }
+        return true;
+      });
+
+      return `
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">${navLabels[state.nav] || 'Tickets'}</h1>
+            <p class="page-subtitle">${filtered.length} ${filtered.length === 1 ? 'ticket' : 'tickets'}</p>
+          </div>
+        </div>
+
+        ${state.error ? `<div class="alert alert-danger">${escapeHtml(state.error)}</div>` : ''}
+
+        <div class="filters">
+          <input type="text" class="input" placeholder="Buscar por cliente, CUIT, mail o número..."
+                 value="${escapeHtml(state.filters.search)}"
+                 oninput="state.filters.search = this.value; render();">
+        </div>
+
+        ${state.loading ? `<div class="page-loader"><div class="loader loader-dark"></div></div>` :
+          filtered.length === 0 ? `
+            <div class="empty-state">
+              <h3>Sin tickets en esta vista</h3>
+              <p>Todo al día.</p>
+            </div>
+          ` : `
+            <table class="tickets-table">
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Cliente</th>
+                  <th>Destino</th>
+                  <th>Estado</th>
+                  <th>Tipo</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filtered.map(t => `
+                  <tr onclick="openTicket('${t.id}')">
+                    <td class="ticket-num">#${t.numero}</td>
+                    <td>
+                      <div class="client-info">
+                        <span class="client-name">${escapeHtml(t.nombre_client || '(sin nombre)')}</span>
+                        <span class="client-email">${escapeHtml(t.email_client)}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="client-info">
+                        <span class="client-name">${escapeHtml(t.alyc_destino_nombre || '—')}</span>
+                        <span class="client-email">Cta. ${escapeHtml(t.cuenta_comitente_destino || '—')}</span>
+                      </div>
+                    </td>
+                    <td><span class="status-badge ${t.status}">${statusLabel(t.status)}</span></td>
+                    <td>${t.is_same_name ? 'Misma titularidad' : 'Terceros'}</td>
+                    <td>${formatDate(t.created_at)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `}
+      `;
+    }
+
+    async function openTicket(id) {
+      await loadTicketDetail(id);
+    }
+
+    // --- MI LINK (comercial) ---
+    function viewMiLink() {
+      const slug = state.profile.comercial_slug;
+      const link = `${CLIENT_PORTAL_URL}?c=${encodeURIComponent(slug || '')}`;
+      const s = state.stats || {};
+
+      return `
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Tu link de referidos</h1>
+            <p class="page-subtitle">Compartí este link con tus clientes para que inicien su solicitud. Los tickets van a quedar automáticamente asociados a vos.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Tu link personal</div>
+          ${!slug ? `
+            <div class="alert alert-warning">Tu perfil no tiene un <code>comercial_slug</code> asignado. Pedile al admin que te lo configure.</div>
+          ` : `
+            <div class="link-box">
+              <code id="linkText">${escapeHtml(link)}</code>
+              <button class="btn btn-sm btn-secondary" onclick="copyLink('${escapeHtml(link)}')">Copiar</button>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+              El cliente entra, verifica su mail con un código OTP, y completa el wizard. Vos vas a ver el ticket acá en "Mis tickets".
+            </p>
+          `}
+        </div>
+
+        ${s.total_tickets ? `
+          <div class="card">
+            <div class="card-title">Tus números</div>
+            <div class="kpi-grid" style="margin-bottom: 0;">
+              <div class="kpi"><div class="kpi-label">Total tickets</div><div class="kpi-value">${s.total_tickets}</div></div>
+              <div class="kpi"><div class="kpi-label">Clientes únicos</div><div class="kpi-value">${s.clientes_unicos}</div></div>
+              <div class="kpi"><div class="kpi-label">En revisión</div><div class="kpi-value">${s.pendientes_compliance}</div></div>
+              <div class="kpi"><div class="kpi-label">Completadas</div><div class="kpi-value">${s.completadas}</div></div>
+            </div>
+          </div>
+        ` : ''}
+      `;
+    }
+
+    function copyLink(link) {
+      navigator.clipboard.writeText(link).then(() => {
+        alert('Link copiado al portapapeles.');
+      });
+    }
+
+    // --- GENERAR LINK (soporte) ---
+    function viewGenerarLink() {
+      const link = CLIENT_PORTAL_URL;
+      return `
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Link para clientes retail</h1>
+            <p class="page-subtitle">Usá este link para clientes que no tienen un comercial asignado. Los tickets van a quedar sin atribución y cualquiera del equipo de soporte los puede atender.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Link genérico</div>
+          <div class="link-box">
+            <code>${escapeHtml(link)}</code>
+            <button class="btn btn-sm btn-secondary" onclick="copyLink('${escapeHtml(link)}')">Copiar</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- USUARIOS (admin) ---
+    let usuariosData = [];
+    async function loadUsuarios() {
+      const { data } = await sb.from('profiles').select('*').order('full_name');
+      usuariosData = data || [];
+      render();
+    }
+
+    function viewUsuarios() {
+      if (usuariosData.length === 0 && state.nav === 'usuarios' && !state.loading) {
+        setTimeout(loadUsuarios, 0);
+      }
+
+      return `
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Usuarios internos</h1>
+            <p class="page-subtitle">Staff de Cocos con acceso al panel.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('newUser')">+ Nuevo usuario</button>
+        </div>
+
+        <div class="card">
+          <table class="tickets-table">
+            <thead>
+              <tr><th>Nombre</th><th>Mail</th><th>Rol</th><th>Slug (comercial)</th><th>Activo</th></tr>
+            </thead>
+            <tbody>
+              ${usuariosData.map(u => `
+                <tr>
+                  <td>${escapeHtml(u.full_name || '—')}</td>
+                  <td>${escapeHtml(u.email)}</td>
+                  <td><span class="pill">${u.role}</span></td>
+                  <td>${u.comercial_slug ? `<code>${escapeHtml(u.comercial_slug)}</code>` : '—'}</td>
+                  <td>${u.active ? 'Sí' : 'No'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 16px;">
+          <strong>Cómo crear un usuario nuevo:</strong> primero creá el usuario de Auth desde el dashboard de Supabase (Authentication → Users → Add user). Después copiá el UUID del usuario creado y usalo en el formulario de "Nuevo usuario" acá.
+        </div>
+      `;
+    }
+
+    // --- DETAIL ---
+    function viewDetail() {
+      const t = state.selectedTicket;
+      if (!t) return '';
+      const actions = actionsForStatusAndRole(t.status, state.profile.role);
+
+      return `
+        <div style="margin-bottom: 16px;">
+          <button class="btn btn-ghost btn-sm" onclick="state.selectedTicket=null; render();">← Volver</button>
+        </div>
+
+        <div class="detail-header">
+          <div>
+            <h1 class="detail-title">Ticket #${t.numero}</h1>
+            <div class="detail-meta">
+              Creado ${formatDate(t.created_at)} · Por <strong>${escapeHtml(t.email_client)}</strong>
+              ${t.comercial_slug ? ` · Referido por <code>${escapeHtml(t.comercial_slug)}</code>` : ''}
+            </div>
+          </div>
+          <span class="status-badge ${t.status}" style="font-size: 13px; padding: 6px 14px;">${statusLabel(t.status)}</span>
+        </div>
+
+        ${state.error ? `<div class="alert alert-danger">${escapeHtml(state.error)}</div>` : ''}
+
+        <div class="detail-grid">
+          <div>
+            <div class="card">
+              <div class="card-title">Datos del cliente</div>
+              <div class="info-row"><span class="label">Nombre</span><span class="value">${escapeHtml(t.nombre_client || '—')}</span></div>
+              <div class="info-row"><span class="label">CUIT</span><span class="value">${escapeHtml(t.cuit_client || '—')}</span></div>
+              <div class="info-row"><span class="label">Mail</span><span class="value">${escapeHtml(t.email_client)}</span></div>
+              <div class="info-row"><span class="label">Teléfono</span><span class="value">${escapeHtml(t.telefono_client || '—')}</span></div>
+              <div class="info-row"><span class="label">Cuenta origen</span><span class="value">${escapeHtml(t.cuenta_comitente_origen || '—')} (Cocos, Dep. 265)</span></div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Destino</div>
+              <div class="info-row"><span class="label">ALYC</span><span class="value">${escapeHtml(t.alyc_destino_nombre || '—')}</span></div>
+              <div class="info-row"><span class="label">Depositante</span><span class="value">${escapeHtml(t.alyc_destino_depositante || '—')}</span></div>
+              <div class="info-row"><span class="label">Cuenta destino</span><span class="value">${escapeHtml(t.cuenta_comitente_destino || '—')}</span></div>
+              <div class="info-row"><span class="label">Titularidad</span><span class="value">${t.is_same_name ? 'Misma titularidad' : 'A terceros'}</span></div>
+              ${!t.is_same_name ? `
+                <div class="info-row"><span class="label">Titular destino</span><span class="value">${escapeHtml(t.titular_destino_nombre || '—')}</span></div>
+                <div class="info-row"><span class="label">CUIT titular</span><span class="value">${escapeHtml(t.titular_destino_cuit || '—')}</span></div>
+                <div class="info-row"><span class="label">Motivo</span><span class="value">${escapeHtml(t.motivo || '—')}${t.motivo_detalle ? ' — ' + escapeHtml(t.motivo_detalle) : ''}</span></div>
+                <div class="info-row"><span class="label">Relación</span><span class="value">${escapeHtml(t.relacion_destinatario || '—')}</span></div>
+              ` : ''}
+            </div>
+
+            <div class="card">
+              <div class="card-title">Especies a transferir</div>
+              <table class="especies-mini">
+                <thead><tr><th>Código</th><th>Nombre</th><th>Cantidad</th></tr></thead>
+                <tbody>
+                  ${(t.especies || []).map(e => `
+                    <tr>
+                      <td><strong>${escapeHtml(e.codigo)}</strong></td>
+                      <td>${escapeHtml(e.nombre)}</td>
+                      <td>${escapeHtml(String(e.cantidad))}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Documentación</div>
+              ${t.formulario_pdf_path ? `
+                <div class="doc-item">
+                  <strong>Formulario firmado (PDF)</strong>
+                  <a href="#" onclick="downloadFile('formularios', '${t.formulario_pdf_path}'); return false;">Descargar</a>
+                </div>
+              ` : ''}
+              ${t.firma_storage_path ? `
+                <div class="doc-item">
+                  <span>Firma (${t.firma_tipo === 'pantalla' ? 'firma digital en pantalla' : 'archivo subido'})</span>
+                  <a href="#" onclick="downloadFile('firmas', '${t.firma_storage_path}'); return false;">Ver</a>
+                </div>
+              ` : ''}
+              ${state.selectedDocs.length === 0 && !t.formulario_pdf_path ? `
+                <p style="color: var(--text-muted); font-size: 13px;">No hay documentación adjunta.</p>
+              ` : ''}
+              ${state.selectedDocs.map(d => `
+                <div class="doc-item">
+                  <span>${escapeHtml(d.nombre_original)}</span>
+                  <span style="color: var(--text-muted); font-size: 11px;">${(d.size_bytes / 1024).toFixed(0)} KB</span>
+                  <a href="#" onclick="downloadFile('documentos', '${d.storage_path}'); return false;">Descargar</a>
+                </div>
+              `).join('')}
+            </div>
+
+            ${t.status === 'completada' && t.comprobante_path ? `
+              <div class="card">
+                <div class="card-title">Comprobante de liquidación</div>
+                <div class="info-row"><span class="label">Número operación</span><span class="value">${escapeHtml(t.numero_operacion || '—')}</span></div>
+                <div class="info-row"><span class="label">Liquidado</span><span class="value">${formatDate(t.completed_at)}</span></div>
+                <div class="doc-item" style="margin-top: 10px;">
+                  <strong>Comprobante</strong>
+                  <a href="#" onclick="downloadFile('comprobantes', '${t.comprobante_path}'); return false;">Descargar</a>
+                </div>
+              </div>
+            ` : ''}
+
+            ${actions.length > 0 ? `
+              <div class="card">
+                <div class="card-title">Acciones</div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  ${actions.map(a => `
+                    <button class="btn ${a.btn}" onclick="openModal('${a.modal}')">${a.label}</button>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+
+          <div>
+            <div class="card">
+              <div class="card-title">Historial</div>
+              <div class="timeline">
+                ${state.selectedEvents.length === 0 ? `<p style="color: var(--text-muted); font-size: 13px;">Sin eventos.</p>` : ''}
+                ${state.selectedEvents.map(ev => `
+                  <div class="timeline-event">
+                    <div class="timeline-time">${formatDate(ev.created_at)}</div>
+                    <div>${formatEvent(ev)}</div>
+                    ${ev.actor_email ? `<div style="font-size: 11px; color: var(--text-muted);">${escapeHtml(ev.actor_email)}</div>` : ''}
+                    ${ev.payload?.motivo ? `<div style="font-size: 12px; color: var(--text); margin-top: 4px; font-style: italic;">${escapeHtml(ev.payload.motivo)}</div>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Comentarios</div>
+              ${state.selectedComments.length === 0 ? `<p style="color: var(--text-muted); font-size: 13px;">Sin comentarios.</p>` : ''}
+              ${state.selectedComments.map(c => `
+                <div class="comment ${c.is_internal ? 'internal' : ''}">
+                  <div class="comment-header">
+                    <span class="comment-author">
+                      ${c.author_type === 'cliente' ? 'Cliente' : escapeHtml(c.author_name || c.author_email)}
+                      ${c.is_internal ? ' · (interno)' : ''}
+                    </span>
+                    <span>${formatDate(c.created_at)}</span>
+                  </div>
+                  <div class="comment-body">${escapeHtml(c.message)}</div>
+                </div>
+              `).join('')}
+
+              <div style="margin-top: 12px;">
+                <textarea id="newCommentText" class="textarea" placeholder="Escribir comentario..."></textarea>
+                <div style="display: flex; gap: 6px; margin-top: 6px;">
+                  <button class="btn btn-sm btn-secondary" onclick="addComment(true)">Nota interna</button>
+                  ${state.profile.role === 'compliance' || state.profile.role === 'soporte' || state.profile.role === 'admin' ? `
+                    <button class="btn btn-sm btn-primary" onclick="addComment(false)">Enviar al cliente</button>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function actionsForStatusAndRole(status, role) {
+      const actions = [];
+      if (role === 'compliance' || role === 'admin') {
+        if (status === 'en_revision' || status === 'info_pedida') {
+          actions.push({ label: 'Aprobar', btn: 'btn-primary', modal: 'approve' });
+          actions.push({ label: 'Pedir info', btn: 'btn-warning', modal: 'requestInfo' });
+          actions.push({ label: 'Rechazar', btn: 'btn-danger', modal: 'reject' });
+        }
+      }
+      if (role === 'titulos' || role === 'admin') {
+        if (status === 'aprobada') {
+          actions.push({ label: 'Tomar para liquidar', btn: 'btn-primary', modal: 'startLiquidation' });
+        }
+        if (status === 'en_liquidacion') {
+          actions.push({ label: 'Marcar completada', btn: 'btn-primary', modal: 'complete' });
+          actions.push({ label: 'Devolver a Compliance', btn: 'btn-secondary', modal: 'reprocess' });
+        }
+      }
+      return actions;
+    }
+
+    async function downloadFile(bucket, path) {
+      const { data, error } = await sb.storage.from(bucket).createSignedUrl(path, 300);
+      if (error) { alert('No se pudo generar el link de descarga.'); return; }
       window.open(data.signedUrl, '_blank');
     }
 
-    function formatEvent(ev) {
-      const labels = {
-        created: 'Solicitud creada',
-        submitted: 'Solicitud enviada a Compliance',
-        approved: 'Compliance aprobó la solicitud',
-        rejected: 'Compliance rechazó la solicitud',
-        info_requested: 'Compliance solicitó información adicional',
-        info_provided: 'Información adicional aportada',
-        liquidation_started: 'Títulos tomó la solicitud para liquidar',
-        completed: 'Transferencia completada',
-        reprocessed: 'Devuelta para reproceso',
-        comment_added: 'Nuevo mensaje'
-      };
-      return labels[ev.event_type] || ev.event_type;
+    // --- MODALS ---
+    function renderModal() {
+      switch (state.modal) {
+        case 'approve': return modalAction('Aprobar solicitud',
+          'Comentario opcional para el cliente (se envía junto con el mail de aprobación).',
+          'Aprobar', 'actionApprove()', 'btn-primary');
+        case 'reject': return modalAction('Rechazar solicitud',
+          'Motivo del rechazo (obligatorio; se envía al cliente).',
+          'Rechazar', 'actionReject()', 'btn-danger');
+        case 'requestInfo': return modalAction('Pedir información adicional',
+          'Describí qué información necesitás del cliente (se envía por mail).',
+          'Enviar pedido', 'actionRequestInfo()', 'btn-warning');
+        case 'startLiquidation': return modalConfirm('Tomar la solicitud para liquidar',
+          'Esto marca el ticket como "en liquidación". Luego tenés que ejecutar la transferencia en el core y volver acá para cargar el comprobante.',
+          'Tomar', 'actionStartLiquidation()');
+        case 'complete': return modalComplete();
+        case 'reprocess': return modalAction('Devolver a Compliance',
+          'Motivo por el cual volvés el ticket (solo visible internamente).',
+          'Devolver', 'actionReprocess()', 'btn-secondary');
+        case 'newUser': return modalNewUser();
+      }
+      return '';
     }
 
-    // ========================================================================
-    // VIEW: NOT FOUND
-    // ========================================================================
-    function viewNotFound() {
+    function modalAction(title, hint, btnLabel, handler, btnClass) {
       return `
-        <div class="card">
-          <h1 class="card-title">Solicitud no encontrada</h1>
-          <p class="card-subtitle">El link que usaste no corresponde a ninguna solicitud o no tenés permiso para verla. Chequeá que hayas usado el mail correcto al verificar tu identidad.</p>
-          <button class="btn btn-primary btn-block" onclick="window.location.search='';">Volver al inicio</button>
+        <div class="modal-overlay" onclick="if(event.target === this) closeModal()">
+          <div class="modal">
+            <h2>${title}</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">${hint}</p>
+            <textarea id="actionComment" class="textarea" style="min-height: 120px;" autofocus></textarea>
+            <div style="display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end;">
+              <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+              <button class="btn ${btnClass}" onclick="${handler}" ${state.loading ? 'disabled' : ''}>
+                ${state.loading ? '<span class="loader"></span>' : ''} ${btnLabel}
+              </button>
+            </div>
+          </div>
         </div>
       `;
+    }
+
+    function modalConfirm(title, msg, btnLabel, handler) {
+      return `
+        <div class="modal-overlay" onclick="if(event.target === this) closeModal()">
+          <div class="modal">
+            <h2>${title}</h2>
+            <p style="color: var(--text); margin-bottom: 20px;">${msg}</p>
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="${handler}" ${state.loading ? 'disabled' : ''}>
+                ${state.loading ? '<span class="loader"></span>' : ''} ${btnLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function modalComplete() {
+      return `
+        <div class="modal-overlay" onclick="if(event.target === this) closeModal()">
+          <div class="modal">
+            <h2>Completar liquidación</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+              Cargá el número de operación y el comprobante generado por el core. Al guardar, el cliente recibe el comprobante por mail.
+            </p>
+            <div class="field">
+              <label>Número de operación</label>
+              <input type="text" id="numeroOperacion" class="input" autofocus>
+            </div>
+            <div class="field">
+              <label>Comprobante (PDF o imagen)</label>
+              <input type="file" id="comprobanteFile" class="input" accept="image/*,.pdf">
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end;">
+              <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="actionComplete()" ${state.loading ? 'disabled' : ''}>
+                ${state.loading ? '<span class="loader"></span>' : ''} Guardar y completar
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function modalNewUser() {
+      return `
+        <div class="modal-overlay" onclick="if(event.target === this) closeModal()">
+          <div class="modal">
+            <h2>Nuevo usuario</h2>
+            <div class="alert alert-info" style="font-size: 12px;">
+              Creá primero el usuario de Auth en Supabase dashboard (Authentication → Users → Add user), después copiá su UUID acá.
+            </div>
+            <div class="field">
+              <label>UUID del usuario de Auth</label>
+              <input type="text" id="newUuid" class="input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+            </div>
+            <div class="field">
+              <label>Mail</label>
+              <input type="email" id="newEmail" class="input">
+            </div>
+            <div class="field">
+              <label>Nombre completo</label>
+              <input type="text" id="newName" class="input">
+            </div>
+            <div class="field">
+              <label>Rol</label>
+              <select id="newRole" class="select">
+                <option value="comercial">Comercial</option>
+                <option value="soporte">Soporte</option>
+                <option value="compliance">Compliance</option>
+                <option value="titulos">Títulos</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Slug (solo comerciales)</label>
+              <input type="text" id="newSlug" class="input" placeholder="ej: juanperez">
+              <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Si no es comercial, dejalo vacío.</p>
+            </div>
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="createUser()">Crear perfil</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function createUser() {
+      const uuid = document.getElementById('newUuid').value.trim();
+      const email = document.getElementById('newEmail').value.trim();
+      const name = document.getElementById('newName').value.trim();
+      const role = document.getElementById('newRole').value;
+      const slug = document.getElementById('newSlug').value.trim() || null;
+
+      if (!uuid || !email || !role) { alert('Completá UUID, mail y rol.'); return; }
+      if (role === 'comercial' && !slug) { alert('Un comercial necesita un slug.'); return; }
+
+      try {
+        const { error } = await sb.from('profiles').insert({
+          id: uuid, email, full_name: name, role, comercial_slug: slug, active: true
+        });
+        if (error) throw error;
+        closeModal();
+        await loadUsuarios();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
     }
 
     // ========================================================================
@@ -2019,44 +1688,59 @@
     // ========================================================================
     function escapeHtml(s) {
       if (s === null || s === undefined) return '';
-      return String(s)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
         .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
-
     function formatDate(iso) {
       if (!iso) return '';
-      const d = new Date(iso);
-      return d.toLocaleString('es-AR', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
+      return new Date(iso).toLocaleString('es-AR', {
+        day: '2-digit', month: '2-digit', year: '2-digit',
         hour: '2-digit', minute: '2-digit'
       });
     }
+    function statusLabel(s) {
+      return ({
+        borrador: 'Borrador', en_revision: 'En revisión', info_pedida: 'Info pedida',
+        aprobada: 'Aprobada', en_liquidacion: 'En liquidación',
+        completada: 'Completada', rechazada: 'Rechazada'
+      })[s] || s;
+    }
+    function formatEvent(ev) {
+      const labels = {
+        created: 'Solicitud creada',
+        submitted: 'Enviada a Compliance',
+        approved: 'Aprobada por Compliance',
+        rejected: 'Rechazada por Compliance',
+        info_requested: 'Información adicional solicitada',
+        info_provided: 'Cliente respondió',
+        liquidation_started: 'Tomada por Títulos',
+        completed: 'Transferencia completada',
+        reprocessed: 'Devuelta para reproceso',
+        comment_added: 'Nuevo comentario'
+      };
+      return labels[ev.event_type] || ev.event_type;
+    }
 
-    // Expose handlers (already global via function declarations)
-    window.sendOtp = sendOtp;
-    window.verifyOtp = verifyOtp;
-    window.backToLanding = backToLanding;
-    window.nextStep = nextStep;
-    window.prevStep = prevStep;
-    window.submitTicket = submitTicket;
-    window.mutTicket = mutTicket;
-    window.setSameName = setSameName;
-    window.setAlyc = setAlyc;
-    window.addEspecie = addEspecie;
-    window.removeEspecie = removeEspecie;
-    window.updateEspecie = updateEspecie;
-    window.addDocs = addDocs;
-    window.removeDoc = removeDoc;
-    window.setFirmaTipo = setFirmaTipo;
-    window.setFirmaFile = setFirmaFile;
-    window.clearSig = clearSig;
-    window.goToStatus = goToStatus;
-    window.sendComment = sendComment;
-    window.downloadComprobante = downloadComprobante;
+    // Globals
+    window.login = login;
+    window.logout = logout;
+    window.navTo = navTo;
+    window.openTicket = openTicket;
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.actionApprove = actionApprove;
+    window.actionReject = actionReject;
+    window.actionRequestInfo = actionRequestInfo;
+    window.actionStartLiquidation = actionStartLiquidation;
+    window.actionComplete = actionComplete;
+    window.actionReprocess = actionReprocess;
+    window.addComment = addComment;
+    window.downloadFile = downloadFile;
+    window.copyLink = copyLink;
+    window.createUser = createUser;
     window.render = render;
+    window.state = state;
 
-    // Boot
     boot();
   </script>
 </body>
