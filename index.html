@@ -380,6 +380,8 @@
       background: white;
       position: relative;
       overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
     }
     .sig-canvas {
       display: block;
@@ -387,6 +389,9 @@
       height: 220px;
       cursor: crosshair;
       touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
     .sig-actions {
       display: flex;
@@ -858,8 +863,9 @@
       root.innerHTML = html;
 
       // Post-render hooks
-      if (state.view === 'wizard' && state.wizardStep === 5 && state.ticket.firmaTipo === 'pantalla') {
-        setTimeout(initSignaturePad, 0);
+      const firmaStep = state.ticket.isSameName === false ? 5 : 4;
+      if (state.view === 'wizard' && state.wizardStep === firmaStep && state.ticket.firmaTipo === 'pantalla') {
+        setTimeout(initSignaturePad, 50);
       }
     }
 
@@ -1343,17 +1349,52 @@
     function initSignaturePad() {
       const canvas = document.getElementById('sigCanvas');
       if (!canvas) return;
+
+      // Si había una instancia previa, destruirla para evitar fugas de eventos
+      if (sigPad) {
+        try { sigPad.off(); } catch (e) {}
+        sigPad = null;
+      }
+
+      // Si el canvas todavía no tiene dimensiones (el DOM todavía no calculó layout),
+      // esperar un tick y reintentar
+      if (canvas.offsetWidth === 0) {
+        setTimeout(initSignaturePad, 50);
+        return;
+      }
+
       const ratio = Math.max(window.devicePixelRatio || 1, 1);
       canvas.width = canvas.offsetWidth * ratio;
       canvas.height = canvas.offsetHeight * ratio;
       canvas.getContext('2d').scale(ratio, ratio);
+
       sigPad = new window.SignaturePad(canvas, {
         backgroundColor: 'rgb(255,255,255)',
-        penColor: 'rgb(17,17,17)'
+        penColor: 'rgb(17,17,17)',
+        minWidth: 1,
+        maxWidth: 3
       });
+
       // Si ya había firma guardada, restaurarla
       if (state.ticket.firmaDataUrl) {
         sigPad.fromDataURL(state.ticket.firmaDataUrl);
+      }
+
+      // Manejo de resize (orientación del móvil, etc.)
+      if (!window._sigResizeBound) {
+        window._sigResizeBound = true;
+        window.addEventListener('resize', () => {
+          const c = document.getElementById('sigCanvas');
+          if (!c || !sigPad) return;
+          // Guardar firma actual, re-escalar, restaurar
+          const data = sigPad.toData();
+          const r = Math.max(window.devicePixelRatio || 1, 1);
+          c.width = c.offsetWidth * r;
+          c.height = c.offsetHeight * r;
+          c.getContext('2d').scale(r, r);
+          sigPad.clear();
+          if (data && data.length) sigPad.fromData(data);
+        });
       }
     }
 
